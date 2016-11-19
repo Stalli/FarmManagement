@@ -7,7 +7,6 @@ using KendoGridUtilities;
 using FarmManagement.Models.ViewModel;
 using FarmManagement.Models;
 using FarmManagement.Lib;
-using static System.Decimal;
 
 namespace FarmManagement.Controllers
 {
@@ -64,7 +63,7 @@ namespace FarmManagement.Controllers
                 {
                     decimal numericSalary;
 
-                    if (TryParse(basicSalaryFromEmployeeTable, out numericSalary))
+                    if (Decimal.TryParse(basicSalaryFromEmployeeTable, out numericSalary))
                         empSalaryModel.BasicSalary = numericSalary;
                 }
 
