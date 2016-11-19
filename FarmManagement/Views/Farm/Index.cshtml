@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Farm Management";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateFarm(0)">
+            Add New Farm
+        </button>
+    </div>
+
+    <div id="grdFarm">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterFarmRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdFarm").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("FarmAjax", "Farm")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+				{ field: "Address", title: "Address" },
+                { field: "TotalArea", title: "Total Area" },
+                { field: "ActualPrice", title: "Actual Price" },
+                { field: "TaxAmount", title: "Tax Amount" },
+                { field: "TotalValue", title: "Total Value" },
+                { field: "PaperValue", title: "Paper Value" },
+				{ field: "Rent", title: "Rent" },
+                { field: "Owner", title: "Owner" },
+                { field: "Status", title: "Status" },
+                { field: "PurchasedDate", title: "Date Purchase", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "StartDate", title: "StartDate", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "EndDate", title: "EndDate", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "Description", title: "Other Description" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: getEditButton("createUpdateFarm(#=Id#)")
+                }]
+            });
+        });
+
+        function createUpdateFarm(id) {
+            kendo.ui.progress($("#grdFarm"), true);
+            $.get('@Url.Action("CreateUpdateFarm", "Farm")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Farm" : "Create New Farm");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdFarm", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterFarmRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdFarm').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["FarmName", "Address", "TotalArea", "ActualPrice", "TaxAmount", "TotalValue", "PaperValue", "Rent", "Owner", "Status",
+                          "PurchasedDate", "StartDate", "EndDate"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdFarm"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdFarm", searchText);
+            }
+        });
+
+    </script>
+}

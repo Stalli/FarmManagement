@@ -1,0 +1,121 @@
+﻿@model Dictionary<string, Int32>
+
+@{
+    string url = Url.Action("TemporaryEmployeeAttendance", "Attendance", new { year = Model["Year"], month = Model["Month"], employeeId = Model["EmployeeId"] });
+}
+
+<div id="grdTemporaryEmployee">
+</div>
+
+<script type="text/x-kendo-template" id="template">
+    @Html.Partial("SearchRecordsPartial")
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('#txtSearch').typing({
+                stop: function () { filterTemporaryEmployees(); },
+                delay: 300
+            });
+        }, 3000);
+
+        $("#grdTemporaryEmployee").kendoGrid({
+            dataSource: kendoReadDataSource('@url'),
+            toolbar: kendo.template($("#template").html()),
+            scrollable: false,
+            sortable: true,
+            pageable: addGridPageSizes(),
+            columns: [
+            { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+            {
+                title: "Morning",
+                columns: [
+                         {
+                             field: "IsPresentMorning",
+                             title: "Present",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsPresentMorning', dataItem.IsPresentMorning) }
+                         },
+                         {
+                             field: "IsAbsentMorning",
+                             title: "Absents",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsAbsentMorning', dataItem.IsAbsentMorning) }
+                         },
+                         {
+                             field: "IsLeaveMorning",
+                             title: "Leave",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsLeaveMorning', dataItem.IsLeaveMorning) }
+                         }]
+            },
+            {
+                title: "Night",
+                columns: [
+                         {
+                             field: "IsPresentNight",
+                             title: "Present",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsPresentNight', dataItem.IsPresentNight) }
+                         },
+                         {
+                             field: "IsAbsentNight",
+                             title: "Leave",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsAbsentNight', dataItem.IsAbsentNight) }
+                         },
+                         {
+                             field: "IsLeaveNight",
+                             title: "Absents",
+                             template: function (dataItem) { return onCheckboxChange(dataItem, 'IsLeaveNight', dataItem.IsLeaveNight) }
+                         }]
+            }]
+
+        });
+    });
+
+    function onCheckboxChange(dataItem, name, isCheck) {
+        var checkBox = String.format("<input id='chk_{0}_{1}' name='chk_{0}_{1}' onchange='updateEmpAttendance(this)' ", name, dataItem.AttendanceGuid);
+        if (isCheck) {
+            checkBox += 'checked=checked ';
+        }
+        checkBox += "type='checkbox' />";
+        return checkBox;
+    }
+
+    function updateEmpAttendance(checkbox) {
+        var row = $(checkbox).closest("tr");
+        var grid = $("#grdTemporaryEmployee").data("kendoGrid").dataItem(row);
+        var updateProperty = $(checkbox).attr('Id').split('_')[1];
+
+        var record = [{
+            "Id": grid.Id, "Year": parseInt($("#drpYear").val()), "Month": parseInt($("#drpMonth").val()), "Date": new Date(grid.Date).toLocaleString(), "Attendance": updateProperty,
+            "Value": $(checkbox).is(":checked"), "EmployeeId": parseInt($("#drpEmployee").val())
+        }];
+
+        kendo.ui.progress($("#grdTemporaryEmployee"), true);
+        $.post('@Url.Action("UpdateEmployeeAttendance", "Attendance")', { data: record }, function (response) {
+            showMessageRebindGrid(response, "grdTemporaryEmployee");
+        });
+    }
+
+    function filterTemporaryEmployees() {
+        var query = $("#txtSearch").val();
+        var dataSource = $('#grdTemporaryEmployee').data().kendoGrid.dataSource;
+
+        if (query.trim().length == 0) {
+            dataSource.filter([]);
+            return;
+        }
+        var fields = ["Date", "IsPresentMorning", "IsAbsentMorning", "IsLeaveMorning", "IsPresentNight", "IsAbsentNight", "IsLeaveNight"];
+        var filters = [];
+        $.each(fields, function (i, value) {
+            filters.push({ field: value, operator: "contains", value: query })
+        });
+        dataSource.filter({ logic: "or", filters: filters });
+    }
+
+    $(document).ajaxStop(function () {
+        kendo.ui.progress($("#grdPermanentEmployee"), false);
+        var searchText = $("#txtSearch").val();
+        if (searchText != null) {
+            highlightGridRow("grdPermanentEmployee", searchText);
+        }
+    });
+
+</script>

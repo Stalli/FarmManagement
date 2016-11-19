@@ -1,0 +1,109 @@
+@{
+    ViewBag.Title = "Transection Account";
+}
+
+<div class="col-md-12">
+    @if (LoggedInUser.IsAdmin)
+    {
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="createUpdateTransectionAccount(0)">
+                Add New Transection Account
+            </button>
+        </div>
+    }
+
+    <div id="grdTransectionAccount">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterTransectionAccountRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdTransectionAccount").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("TransectionAccountAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Employee Name" },
+                { field: "PayByName", title: "Pay By" },
+                { field: "Amount", title: "Balance" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: getDeleteButton('deleteTransectionAccount(#=Id#)')
+                }]
+            });
+        });
+
+        function deleteTransectionAccount(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Transection Account ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdTransectionAccount"), true);
+                $.get('@Url.Action("DeleteTransectionAccount", "LoanManagement")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdTransectionAccount");
+                });
+            }
+        }
+
+        function createUpdateTransectionAccount(id) {
+            kendo.ui.progress($("#grdTransectionAccount"), true);
+            $.get('@Url.Action("CreateUpdateTransectionAccount", "LoanManagement")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html("Create New Transection Personal Account");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdTransectionAccount", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterTransectionAccountRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdTransectionAccount').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "PayByName", "Balance", "Date"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdTransectionAccount"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdTransectionAccount", searchText);
+            }
+        });
+
+    </script>
+}

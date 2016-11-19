@@ -1,0 +1,115 @@
+@{
+    ViewBag.Title = "Crop Management";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateCrop(0)">
+            Add New Crop
+        </button>
+    </div>
+
+    <div id="grdCrop">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterCropRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdCrop").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("CropAjax", "Crop")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "CropName", title: "Crop Name" },
+				{ field: "FarmName", title: "Farm Name" },
+                { field: "AreaName", title: "Area" },
+                { field: "CropDuration", title: "Crop Duration" },
+				{ field: "CropStartDate", title: "StartDate", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "CropEndDate", title: "EndDate", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return cropAction(dataItem) }
+                }]
+            });
+        });
+
+        function cropAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateCrop({0})", dataItem.Id));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteCrop({0})", dataItem.Id));
+            }
+            return action;
+        }
+
+        function deleteCrop(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Crop ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdCrop"), true);
+                $.get('@Url.Action("DeleteCrop", "Crop")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdCrop");
+                });
+            }
+        }
+        function createUpdateCrop(id) {
+            kendo.ui.progress($("#grdCrop"), true);
+            $.get('@Url.Action("CreateUpdateCrop", "Crop")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Crop" : "Create New Crop");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdCrop", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterCropRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdCrop').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["FarmName", "AreaName", "CropName", "CropDuration", "CropStartDate", "CropEndDate"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdCrop"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdCrop", searchText);
+            }
+        });
+
+    </script>
+}

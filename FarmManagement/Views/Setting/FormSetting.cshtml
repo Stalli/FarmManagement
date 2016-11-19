@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Form Setting";
+}
+
+<div class="col-md-12">
+    <div class="widget box form-horizontal">
+        <div class="widget-header">
+            <h4>
+                <i class="icon-reorder"></i>Role
+            </h4>
+        </div>
+        <div class="widget-content">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input id="drpRole" name="RoleId" class="form-control-input" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divFormSetting" style="display:none">
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            bindRoles("drpRole");
+
+            $("#drpRole").change(function () {
+                $("#divFormSetting").hide();
+                var role = $("#drpRole").val();
+                if (role > 0) {
+                    $.get('@Url.Action("GetFormSettingPartial", "Setting")', { role: role }, function (partialView) {
+                        $("#divFormSetting").html(partialView);
+                        $("#divFormSetting").show();
+                    });
+                }
+            })
+        })
+
+    </script>
+}

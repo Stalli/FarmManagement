@@ -1,0 +1,115 @@
+@{
+    ViewBag.Title = "Animal";
+}
+
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateAnimal(0)">
+            Add New Animal
+        </button>
+    </div>
+
+    <div id="grdAnimal">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterAnimalRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdAnimal").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("AnimalAjax", "Stock")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+                { field: "Expense", title: "Account" },
+                { field: "AnimalName", title: "Animal Name" },
+				{ field: "VendorName", title: "Vendor Name" },
+				{ field: "FamilyName", title: "Family Name" },
+                { field: "Sex", title: "Sex" },
+                { field: "Category", title: "Category" },
+                { field: "Price", title: "Price" },
+				{ field: "Age", title: "Age" },
+				{ field: "Color", title: "Color" },
+                { field: "PurchaseDate", title: "Date Purchase", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "Description", title: "Description" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: getEditButton('createUpdateAnimal(#=Id#)') + getDeleteButton('deleteAnimal(#=Id#)')
+                }]
+            });
+        });
+
+        function deleteAnimal(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Animal ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdAnimal"), true);
+                $.get('@Url.Action("DeleteAnimal", "Stock")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdAnimal");
+                });
+            }
+        }
+        function createUpdateAnimal(id) {
+            kendo.ui.progress($("#grdAnimal"), true);
+            $.get('@Url.Action("CreateUpdateAnimal", "Stock")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Animal" : "Create New Animal");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdAnimal", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterAnimalRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdAnimal').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["AnimalName", "Category", "Price", "PurchaseDate", "Age", "Color", "Description", "VendorName", "FamilyName", "Sex"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdAnimal"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdAnimal", searchText);
+            }
+        });
+
+    </script>
+}

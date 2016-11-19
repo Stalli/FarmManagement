@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Animal Report";
+}
+
+<div class="col-md-12 form-horizontal">
+    <div class="col-md-6">
+        <div class="widget box">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>Filters
+                </h4>
+            </div>
+            <div class="widget-content">
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> Print Type</label>
+                    <div class="col-md-9">
+                        <select id="drpPrintType" name="PrintType" class="form-control">
+                            <option>Pdf</option>
+                            <option>Excel</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Start Date</label>
+                    <div class="col-md-9">
+                        <input id="drpStartDate" name="StartDate" class="form-control-input date-picker"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">End Date</label>
+                    <div class="col-md-9">
+                        <input id="drpEndDate" name="EndDate" class="form-control-input date-picker"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Employee</label>
+                    <div class="col-md-9">
+                        <select id="drpAnimalEmployee" name="Employee" class="form-control-input"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Category</label>
+                    <div class="col-md-9">
+                        <select id="drpAnimalCategory" name="AnimalCategory" class="form-control-input"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Gender</label>
+                    <div class="col-md-9">
+                        <select id="drpAnimalGender" name="AnimalGender" class="form-control-input"></select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <input id="btnReset" type="reset" class="btn btn-primary pull-right" value="Clear" />
+                    <input type="button" value="Print" id="btnAnimalReport" class="btn btn-primary pull-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".date-picker").kendoDatePicker({ value: new Date() });
+
+            bindPayByEmployee("drpAnimalEmployee");
+            bindAnimalCategory("drpAnimalCategory");
+            bindAnimalGender("drpAnimalGender");
+
+            $("#btnAnimalReport").click(function () {
+                blockUI("body");
+
+                var filter = {
+                    PrintType: $("#drpPrintType").val(), Employee: $("#drpAnimalEmployee").val(), StartDate: $("#drpStartDate").val(), EndDate: $("#drpEndDate").val(),
+                    Category: $("#drpAnimalCategory").val(), Gender: $("#drpAnimalGender").val()
+                };
+                $.post('@Url.Action("GetAnimalReport", "Report")', { filter: filter }, function (response) {
+                    location.href = '@Url.Action("Download", "Report")';
+                    $.unblockUI();
+                });
+            });
+        });
+    </script>
+}

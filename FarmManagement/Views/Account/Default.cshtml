@@ -1,0 +1,392 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Khan Forms</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="Khan Forms" />
+
+    <link href="@Url.Content("~/Content/front/css/bootstrap.css")" rel='stylesheet' type='text/css' />
+    <link href="@Url.Content("~/Content/front/css/style.css")" rel="stylesheet" type="text/css" media="all" />
+    <script src="@Url.Content("~/Content/front/js/jquery.min.js")"></script>  
+
+    
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+
+    <script src="@Url.Content("~/Content/front/js/responsiveslides.min.js")"></script>
+    <script>
+        $(function () {
+            $("#slider").responsiveSlides({
+                auto: true,
+                nav: true,
+                speed: 500,
+                namespace: "callbacks",
+                pager: true,
+            });
+        });
+
+    </script>
+    <!--start-smoth-scrolling-->
+    <script type="text/javascript" src="@Url.Content("~/Content/front/js/move-top.js")"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+            });
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- header-section-Start -->
+    <div class="header" id="home">
+        <div class="container">
+            <div class="logo">
+                <a href="index.php"><img src="@Url.Content("~/Content/front/images/logo.png")" alt="Your logo hare" /></a>
+            </div>
+            <div class="top-menu">
+                <span class="menu"> </span>
+                <ul>
+                    <li><a class="active" href="@Url.Action("Default", "Account")">home<label><img src="@Url.Content("~/Content/front/images/line.png")"></label></a></li>
+                    <li><a href="">about</a></li>
+                    <li><a href="">contact</a></li>
+                    <li>
+                        <a style="margin-left:150px" href="@Url.Action("Login", "Account")" class="btn btn-lg btn-success">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header-section-ends -->
+    <!-- slider-section-Start -->
+    <div class="header-slider" id="home">
+        <div class="slider">
+            <div class="callbacks_container">
+                <ul class="rslides" id="slider">
+                    <li>
+                        <img src="@Url.Content("~/Content/front/images/image1.jpg")" alt="">
+                    </li>
+                    <li>
+                        <img src="@Url.Content("~/Content/front/images/image1.jpg")" alt="">
+
+                    </li>
+                    <li>
+                        <img src="@Url.Content("~/Content/front/images/image1.jpg")" alt="">
+
+                    </li>
+                    <li>
+                        <img src="@Url.Content("~/Content/front/images/image1.jpg")" alt="">
+
+                    </li>
+                    <li>
+                        <img src="@Url.Content("~/Content/front/images/image1.jpg")" alt="">
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- slider-section-starts -->
+    <!-- content-section-starts -->
+    <div class="content">
+        <div class="ourservice">
+            <div class="container">
+
+                <div class="ourservice-header">
+                    <div class="ourservice-head">
+                        <h3>our services</h3>
+                    </div>
+                </div>
+
+                <div class="ourservice-grids">
+
+                    <div class="col-md-3 ourservice-grid text-center">
+                        <img src="images/pic1.png" class="img-responsive" alt="" />
+                        <h3>Farm Housing</h3>
+                        <p>Khan Form Provide the Lorem ipsum dolor sit amet, consectetur </p>
+                    </div>
+
+                    <div class="col-md-3 ourservice-grid text-center">
+                        <img src="images/pic4.png" class="img-responsive" alt="" />
+                        <h3>Cultivation</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit mauris</p>
+                    </div>
+
+                    <div class="col-md-3 ourservice-grid text-center">
+                        <img src="images/pic2.png" class="img-responsive" alt="" />
+                        <h3>Advanced Machinery</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit mauris nec</p>
+                    </div>
+
+                    <div class="col-md-3 ourservice-grid text-center">
+                        <img src="images/pic3.png" class="img-responsive" alt="" />
+                        <h3>Crop Management </h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit mauris nec </p>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ourportfoilo">
+            <div class="container">
+
+                <div class="ourservice-header">
+                    <div class="ourservice-head">
+                        <h3>our portfolio</h3>
+                    </div>
+                </div>
+
+                <div class="our-work-section" id="portfolio">
+                    <div id="portfoliolist">
+                        <div class="portfolio card mix_all  wow bounceIn cbp-vm-image" data-wow-delay="0.4s" data-cat="card" style="display: inline-block; opacity: 1;">
+                            <div class="portfolio-wrapper">
+                                <a href="#small-dialog" class="b-link-stripe b-animate-go  thickbox play-icon popup-with-zoom-anim">
+                                    <img src="@Url.Content("~/Content/front/images/s1.jpg")" alt="" />
+                                    <div class="b-wrapper">
+                                        <div class="b-animate b-from-left    b-delay03 ">
+                                            <div class="animate-head">
+                                                <div class="animate-head-left">
+                                                    <h4>Ipsum Amet Dolar Sit </h4>
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adip iscingelitmauris nec ipsum at lacus commodo. </p>
+                                                    <img src="@Url.Content("~/Content/front/images/icon-eye.png")" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                </a>
+                            </div>
+                        </div>
+                        <h4>Ipsum Amet Dolar Sit </h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.Mauris nec ipsum at lacus commodo suscipit. </p>
+                    </div>
+
+                    <div class="portfolio app mix_all  wow bounceIn" data-wow-delay="0.4s" data-cat="app" style="display: inline-block; opacity: 1;">
+                        <div class="portfolio-wrapper">
+                            <a href="#small-dialog1" class="b-link-stripe b-animate-go  thickbox play-icon popup-with-zoom-anim">
+                                <img src="@Url.Content("~/Content/front/images/s2.jpg")" alt="" /><div class="b-wrapper">
+                                    <div class="b-animate b-from-left    b-delay03 ">
+                                        <div class="animate-head">
+                                            <div class="animate-head-left">
+                                                <h4>Ipsum Amet Dolar Sit </h4>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adip iscingelitmauris nec ipsum at lacus commodo. </p>
+                                                <img src="@Url.Content("~/Content/front/images/icon-eye.png")" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                            </a>
+                        </div>
+                    </div>
+                    <h4>Lorem Ipsum</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscinglit.</p>
+                </div>
+                <div class="portfolio icon mix_all  wow bounceIn" data-wow-delay="0.4s" data-cat="icon" style="display: inline-block; opacity: 1;">
+                    <div class="portfolio-wrapper">
+                        <a href="#small-dialog3" class="b-link-stripe b-animate-go  thickbox play-icon popup-with-zoom-anim">
+                            <img src="@Url.Content("~/Content/front/images/s3.jpg")" alt="" /><div class="b-wrapper">
+                                <div class="b-animate b-from-left    b-delay03 ">
+                                    <div class="animate-head">
+                                        <div class="animate-head-left">
+                                            <h4>Ipsum Amet Dolar Sit </h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adip iscingelitmauris nec ipsum at lacus commodo. </p>
+                                            <img src="@Url.Content("~/Content/front/images/icon-eye.png")" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                        </a>
+                    </div>
+                </div>
+                <h4>Ipsum Amet Dolar Sit </h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitmauris nec ipsum at lacus commodo suscipit.</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1200);
+            });
+        });
+    </script>
+    <!-- Script for gallery Here -->
+    <script type="text/javascript" src="@Url.Content("~/Content/front/js/jquery.mixitup.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            var filterList = {
+                init: function () {
+                    // MixItUp plugin
+                    // http://mixitup.io
+                    $('#portfoliolist').mixitup({
+                        targetSelector: '.portfolio',
+                        filterSelector: '.filter',
+                        effects: ['fade'],
+                        easing: 'snap',
+                        // call the hover effect
+                        onMixEnd: filterList.hoverEffect()
+                    });
+                },
+                hoverEffect: function () {
+                    // Simple parallax effect
+                    $('#portfoliolist .portfolio').hover(
+                    function () {
+                        $(this).find('.label').stop().animate({ bottom: 0 }, 200, 'easeOutQuad');
+                        $(this).find('img').stop().animate({ top: -30 }, 500, 'easeOutQuad');
+                    },
+                    function () {
+                        $(this).find('.label').stop().animate({ bottom: -40 }, 200, 'easeInQuad');
+                        $(this).find('img').stop().animate({ top: 0 }, 300, 'easeOutQuad');
+                    }
+                    );
+                }
+            };
+            // Run the show!
+            filterList.init();
+        });
+    </script>
+    <!-- Gallery Script Ends -->
+    <!-- pop-up-box -->
+    <script type="text/javascript" src="@Url.Content("~/Content/front/js/modernizr.custom.min.js")"></script>
+    <link href="@Url.Content("~/Content/front/css/popuo-box.css")" rel="stylesheet" type="text/css" media="all" />
+    <script src="@Url.Content("~/Content/front/js/jquery.magnific-popup.js")" type="text/javascript"></script>
+    <!-- //pop-up-box -->
+    <div id="small-dialog" class="mfp-hide">
+        <div class="image-top">
+            <img src="@Url.Content("~/Content/front/images/b1.jpg")" alt="" />
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to book.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour. </p>
+        </div>
+    </div>
+    <div id="small-dialog1" class="mfp-hide">
+        <div class="image-top">
+            <img src="@Url.Content("~/Content/front/images/b2.jpg")" alt="" />
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to book.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+        </div>
+    </div>
+
+    <div id="small-dialog3" class="mfp-hide">
+        <div class="image-top">
+            <img src="@Url.Content("~/Content/front/images/b3.jpg")" alt="" />
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to book.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+        });
+    </script>
+    <div class="clearfix"></div>
+    <!-- Work Ends Here -->
+
+    <div class="clearfix"></div>
+
+    <div class="about">
+        <div class="container">
+            <div class="about-header">
+                <h3>what we offer</h3>
+                <p>Khan Forms Provides ....., consectetur adipiscing elit. Ut ultricies sagittis magnaa commodo. Ut eget eros mauris, ut cursus urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.</p>
+            </div>
+            <div class="about-grids">
+                <div class="col-md-3 about-grid">
+                    <h3>Farm Housing</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida mattis mi vitae tristique. Quisque vel purus tempor, tincidunt tellus ut .</p>
+                    <a href="#">details</a>
+                </div>
+                <div class="col-md-3 about-grid1">
+                    <h3>Cultivation</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida mattis mi vitae tristique. Quisque vel purus ittem portellus ut.<a href="#">details...</a></p>
+                </div>
+                <div class="col-md-3 about-grid">
+                    <h3>Advanced Machinery</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida mattis mi vitae tristique. Quisque vel purus tempor, tincidunt tellus ut.</p>
+                    <a href="#">details</a>
+                </div>
+                <div class="col-md-3 about-grid1">
+                    <h3>Crop Management</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida mattis mi vitae tristique. Quisque vel purus tempor, tincidu tellus ut.<a href="#">>>></a></p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-4 text-color">
+                <h3>ADDRESS</h3>
+                <h6>
+                    <b>Address:</b>
+                    C............, Suit# F-07, 4th-Floor
+                    Sector-...7,  <br>................,
+                    <br> Lalian Pakistan.
+                    <br><strong>Email: </strong> info@khanfarms.com
+                    <br><strong>Website:</strong> www.khanfarms.com
+                    <br><strong>Call US Now:</strong>0213 695 4047<br>
+                </h6>
+
+
+            </div>
+            <div class="col-md-4 text-color">
+                <h3>OUR COMPANY</h3>
+                <a href="#" style="color:#FFF">Terms of Use</a><br />
+                <a href="#" style="color:#FFF">Privacy Policy</a><br />
+                <a href="#" style="color:#FFF">Copyright</a><br />
+            </div>
+
+            <div class="col-md-4 text-color">
+                <h3>CONTACT</h3>
+
+                <i class="smartphone"></i>1-000-000-0000
+                <i class="phone"></i>1-000-000-0000<br>
+                <i class="message"></i>info@khanfarms.com
+            </div>
+            <div class="clearfix"></div>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    /*
+                    var defaults = {
+                        containerID: 'toTop', // fading element id
+                        containerHoverID: 'toTopHover', // fading element hover id
+                        scrollSpeed: 1200,
+                        easingType: 'linear'
+                    };
+                    */
+
+                    $().UItoTop({ easingType: 'easeOutQuart' });
+
+                });
+            </script>
+            <a class="scroll" href="#home" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+
+        </div>
+        <hr class="twitter-feed">
+        <div class="footer-bottom">
+            <p> Copyright &copy;@DateTime.Now.Year  All rights  Reserved |Khan Farms</p>
+        </div>
+    </div>
+</body>
+</html>

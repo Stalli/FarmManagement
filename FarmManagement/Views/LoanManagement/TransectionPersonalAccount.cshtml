@@ -1,0 +1,93 @@
+@{
+    ViewBag.Title = "Transection Personal Account";
+}
+
+<div class="col-md-12">
+    @if (LoggedInUser.IsAdmin)
+    {
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="createUpdateTransectionPersonalAccount(0)">
+                Add New Transection Personal Account
+            </button>
+        </div>
+    }
+
+    <div id="grdTransectionPersonalAccount">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterTransectionPersonalAccountRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdTransectionPersonalAccount").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("TransectionPersonalAccountAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Employee Name" }, 
+                { field: "Credit", title: "Credit" },
+                { field: "Debit", title: "Debit" },
+                { field: "Balance", title: "Balance" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" }]
+            });
+        });
+
+        function createUpdateTransectionPersonalAccount(id) {
+            kendo.ui.progress($("#grdTransectionPersonalAccount"), true);
+            $.get('@Url.Action("CreateUpdateTransectionPersonalAccount", "LoanManagement")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html("Create New Transection Personal Account");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdTransectionPersonalAccount", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterTransectionPersonalAccountRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdTransectionPersonalAccount').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "PayByName", "Balance", "Credit", "Debit", "Date"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdTransectionPersonalAccount"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdTransectionPersonalAccount", searchText);
+            }
+        });
+
+    </script>
+}

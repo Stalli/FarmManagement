@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Department";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateDepartment(0)">
+            Add New Department
+        </button>
+    </div>
+
+    <div id="grdDepartment">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterDepartmentRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdDepartment").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("DepartmentAjax", "Department")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Name" },
+				{ field: "Status", title: "Status" },
+                { field: "Description", title: "Description" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return DepartmentAction(dataItem) }
+                }]
+            });
+        });
+
+        function DepartmentAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateDepartment({0})", dataItem.Id));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteDepartment({0})", dataItem.Id));
+            }
+            return action;
+        }
+
+        function deleteDepartment(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Department ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdDepartment"), true);
+                $.get('@Url.Action("DeleteDepartment", "Department")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdDepartment");
+                });
+            }
+        }
+        function createUpdateDepartment(id) {
+            kendo.ui.progress($("#grdDepartment"), true);
+            $.get('@Url.Action("CreateUpdateDepartment", "Department")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Department" : "Create New Department");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdDepartment", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterDepartmentRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdDepartment').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "Status", "Description", "Date"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdDepartment"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdDepartment", searchText);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,110 @@
+@{
+    ViewBag.Title = "Seed Expense";
+}
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="createUpdateSeedExpense(0)">
+        Add New Seed Expense
+    </button>
+</div>
+
+<div id="grdSeedExpense">
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterSeedExpenseRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdSeedExpense").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("SeedExpenseAjax", "Expense")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+                { field: "AreaName", title: "Area Name" },
+                { field: "Expense", title: "Account" },
+                { field: "CropName", title: "Crop Name" },
+				{ field: "Quality", title: "Quality" },
+				{ field: "Quantity", title: "Quantity" },
+				{ field: "QuantityInNumber", title: "Quantity In Number" },
+                { field: "Name", title: "Used By" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "Description", title: "Description" },
+				{
+				    title: "Action",
+				    sortable: false,
+				    filterable: false,
+				    width: 180,
+				    template: getEditButton('createUpdateSeedExpense(#=Id#)') + getDeleteButton('deleteSeedExpense(#=Id#)')
+				}]
+            });
+        });
+
+        function deleteSeedExpense(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Seed Expense ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdSeedExpense"), true);
+                $.get('@Url.Action("DeleteSeedExpense", "Expense")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdSeedExpense");
+                });
+            }
+        }
+        function createUpdateSeedExpense(id) {
+            kendo.ui.progress($("#grdSeedExpense"), true);
+            $.get('@Url.Action("CreateUpdateSeedExpense", "Expense")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Seed Expense" : "Create New Seed Expense");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdSeedExpense", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterSeedExpenseRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdSeedExpense').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["CropName", "Quality", "Quantity", "QuantityInNumber", "Date", "Name", "Description"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdSeedExpense"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdSeedExpense", searchText);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f0c41c1d48c64145af2d1d5cc0350e2a" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="FarmManagementModel.Animal" Width="1.5" PointX="11.25" PointY="53.625" />
+        <EntityTypeShape EntityType="FarmManagementModel.AttendanceManagement" Width="1.5" PointX="12" PointY="60.125" />
+        <EntityTypeShape EntityType="FarmManagementModel.AttendanceManagementDetail" Width="1.5" PointX="14.25" PointY="49.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.CropManagement" Width="1.5" PointX="14.25" PointY="38.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.Farm" Width="1.5" PointX="6" PointY="33.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.FarmArea" Width="1.5" PointX="12" PointY="38.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.Fertilizer" Width="1.5" PointX="5.25" PointY="50.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.FertilizerExpense" Width="1.5" PointX="13.5" PointY="54.125" />
+        <EntityTypeShape EntityType="FarmManagementModel.Form" Width="1.5" PointX="3.75" PointY="37.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.FormSetting" Width="1.5" PointX="6" PointY="46.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.Fuel" Width="1.5" PointX="14.25" PointY="43.75" />
+        <EntityTypeShape EntityType="FarmManagementModel.FuelExpense" Width="1.5" PointX="16.5" PointY="48.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.LoanManagement" Width="1.5" PointX="5.25" PointY="102.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.LoanReceivableFromBank" Width="1.5" PointX="10.5" PointY="74.875" />
+        <EntityTypeShape EntityType="FarmManagementModel.LoanReceivableFromEmployee" Width="1.5" PointX="7.5" PointY="74.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.Machinery" Width="1.5" PointX="8.25" PointY="57.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.OtherExpense" Width="1.5" PointX="11.25" PointY="49.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.OtherItem" Width="1.5" PointX="11.25" PointY="44.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.PermanentEmployeeSalary" Width="1.5" PointX="5.25" PointY="97.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.PersonalAccount" Width="1.5" PointX="5.25" PointY="40.875" />
+        <EntityTypeShape EntityType="FarmManagementModel.ReturnLoan" Width="1.5" PointX="7.5" PointY="78.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.Role" Width="1.5" PointX="0.75" PointY="46.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.Seed" Width="1.5" PointX="8.25" PointY="50.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.SeedExpense" Width="1.5" PointX="16.5" PointY="53.25" />
+        <EntityTypeShape EntityType="FarmManagementModel.TaskAssignment" Width="1.5" PointX="5.25" PointY="60.75" />
+        <EntityTypeShape EntityType="FarmManagementModel.Vehicle" Width="1.5" PointX="8.25" PointY="39.375" />
+        <EntityTypeShape EntityType="FarmManagementModel.VendorManagement" Width="1.5" PointX="6" PointY="20.625" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Animal" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Animal" />
+        <AssociationConnector Association="FarmManagementModel.FK_AttendanceMgmt_AttendanceMgmtDetail" />
+        <AssociationConnector Association="FarmManagementModel.FK_CropManagement_FertilizerExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_CropManagement_FuelExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_CropManagement_SeedExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_CropManagement" />
+        <AssociationConnector Association="FarmManagementModel.FK_FarmArea_CropManagement" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_FarmArea" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Fertilizer" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_FertilizerExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Fuel" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_FuelExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Machinery" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_OtherExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_OtherItem" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Seed" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_SeedExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_Vehicle" />
+        <AssociationConnector Association="FarmManagementModel.FK_FarmArea_FertilizerExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_FarmArea_FuelExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_FarmArea_SeedExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Fertilizer_FertilizerExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Fertilizer" />
+        <AssociationConnector Association="FarmManagementModel.FK_Form_FromSetting" />
+        <AssociationConnector Association="FarmManagementModel.FK_From_Role" />
+        <AssociationConnector Association="FarmManagementModel.FK_Fuel_FuelExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Fuel" />
+        <AssociationConnector Association="FarmManagementModel.FK_LoanManagement_BankLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_LoanManagement_EmployeeLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_LoanManagement_ReturnLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Machinery" />
+        <AssociationConnector Association="FarmManagementModel.FK_OtherItem_OtherItemExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Seed_SeedExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Seed" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vendor_Vehicle" />
+        <EntityTypeShape EntityType="FarmManagementModel.TransectionPersonalAccount" Width="1.5" PointX="5.25" PointY="65.5" />
+        <EntityTypeShape EntityType="FarmManagementModel.TransectionAccount" Width="1.5" PointX="5.25" PointY="57.125" />
+        <EntityTypeShape EntityType="FarmManagementModel.PaidLoan" Width="1.5" PointX="8.25" PointY="65.125" />
+        <AssociationConnector Association="FarmManagementModel.FK_LoanManagement_PaidLoan" />
+        <EntityTypeShape EntityType="FarmManagementModel.TemporaryEmployeeSalary" Width="2.125" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FarmManagementModel.Account" Width="1.5" PointX="3" PointY="58.125" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Animal" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_BankLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_EmployeeLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Fertilizer" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_FertilizerExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Fuel" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_FuelExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Machinery" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_OtherExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_OtherItem" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_PaidLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_ReturnLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Seed" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_SeedExpense" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_Vehicle" />
+        <EntityTypeShape EntityType="FarmManagementModel.User" Width="1.5" PointX="8.25" PointY="25.625" />
+        <AssociationConnector Association="FarmManagementModel.FK_Animal_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_AttendanceMgmtDetail_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_Farm_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_Fertilizer_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_FertilizerExpense_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_Fuel_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_FuelExpense_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_LoanManagement_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_User_BankLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_User_EmployeeLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Machinery_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_OtherExpense_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_OtherItem_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_PaidLoan_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_PermanentEmployeeSalary_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_PersonalAccount_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_User_ReturnLoan" />
+        <AssociationConnector Association="FarmManagementModel.FK_Role_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_Seed_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_SeedExpense_UserId" />
+        <AssociationConnector Association="FarmManagementModel.FK_User_TaskAssignment" />
+        <AssociationConnector Association="FarmManagementModel.FK_TransectionAccount_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_TransectionAccount_User_PayBy" />
+        <AssociationConnector Association="FarmManagementModel.FK_TransectionPersonalAccount_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_Vehicle_UserId" />
+        <EntityTypeShape EntityType="FarmManagementModel.sysdiagram" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FarmManagementModel.Department" Width="1.5" PointX="3.375" PointY="3.875" />
+        <EntityTypeShape EntityType="FarmManagementModel.Position" Width="1.5" PointX="5.625" PointY="3.875" />
+        <AssociationConnector Association="FarmManagementModel.Position_fk" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_User" />
+        <AssociationConnector Association="FarmManagementModel.FK_Account_User1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

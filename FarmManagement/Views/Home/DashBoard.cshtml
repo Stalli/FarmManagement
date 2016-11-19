@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DashBoard>
+
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+<div class="col-md-12">
+    @foreach (var dashBoard in Model)
+    {
+        <div class="col-sm-6 col-md-3">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-content">
+                    <div class="visual @dashBoard.Color">
+                        <div class="statbox-sparkline">
+                            30,20,15,30,22,25,26,30,27
+                        </div>
+                    </div>
+                    <div class="title">
+                        @dashBoard.Name
+                    </div>
+                    <div class="value">
+                        <span>@dashBoard.Total</span>
+                    </div>
+                    <a class="more" href="javascript:void(0);">
+                        @if (dashBoard.Amount > 0)
+                        {
+                            <span>Amount : @dashBoard.Amount </span>
+                        }
+                        else
+                        {
+                            <label></label>
+                        }
+                        <i class="pull-right icon-angle-right"></i>
+                    </a>
+                    <a class="more" href="javascript:void(0);">
+                        @if (dashBoard.LastBuyDate != null)
+                        {
+                            <span>Last By : @dashBoard.LastBuyDate</span>
+                        }
+                        else
+                        {
+                            <label></label>
+                        }
+                        <i class="pull-right icon-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

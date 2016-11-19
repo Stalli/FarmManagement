@@ -1,0 +1,74 @@
+﻿<div id="grdFormSetting">
+</div>
+
+<script type="text/x-kendo-template" id="template">
+    @Html.Partial("SearchRecordsPartial")
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('#txtSearch').typing({
+                stop: function () { filterPermanentEmployees(); },
+                delay: 300
+            });
+        }, 3000);
+
+        $("#grdFormSetting").kendoGrid({
+            dataSource: kendoReadDataSource('@Url.Action("FormSettingAjax", "Setting")?roleId=' + '@ViewBag.RoleId'),
+            toolbar: kendo.template($("#template").html()),
+            scrollable: false,
+            sortable: true,
+            pageable: addGridPageSizes(),
+            columns: [
+            { field: "Name", title: "Name" },
+            { field: "Type", title: "Type" },
+            { field: "IsAdd", title: "Is Add", template: function (dataItem) { return onCheckboxChange(dataItem, 'IsAdd', dataItem.IsAdd) } },
+            { field: "IsUpdate", title: "Is Update", template: function (dataItem) { return onCheckboxChange(dataItem, 'IsUpdate', dataItem.IsUpdate) } }]
+        });
+    });
+
+    function onCheckboxChange(dataItem, name, isCheck) {
+        var checkBox = String.format("<input id='chk_{0}_{1}_{2}' name='chk_{0}_{1}_{2}' onchange='updateFormSetting(this)' ", name, dataItem.FormId, dataItem.FormGuid);
+        if (isCheck) {
+            checkBox += 'checked=checked ';
+        }
+        checkBox += "type='checkbox' />";
+        return checkBox;
+    }
+
+    function updateFormSetting(checkbox) {
+        var updateProperty = $(checkbox).attr('Id').split('_')[1];
+        var formId = $(checkbox).attr('Id').split('_')[2];
+
+        var record = [{ "RoleId": $("#drpRole").val(), "FormId": formId, "Value": $(checkbox).is(":checked"), "FormSetting": updateProperty }];
+
+        kendo.ui.progress($("#grdFormSetting"), true);
+        $.post('@Url.Action("UpdateFormSetting", "Setting")', { data: record }, function (response) {
+            showMessageRebindGrid(response, "grdFormSetting");
+        });
+    }
+
+    function filterPermanentEmployees() {
+        var query = $("#txtSearch").val();
+        var dataSource = $('#grdFormSetting').data().kendoGrid.dataSource;
+
+        if (query.trim().length == 0) {
+            dataSource.filter([]);
+            return;
+        }
+        var fields = ["Name", "Type"];
+        var filters = [];
+        $.each(fields, function (i, value) {
+            filters.push({ field: value, operator: "contains", value: query })
+        });
+        dataSource.filter({ logic: "or", filters: filters });
+    }
+
+    $(document).ajaxStop(function () {
+        kendo.ui.progress($("#grdFormSetting"), false);
+        var searchText = $("#txtSearch").val();
+        if (searchText != null) {
+            highlightGridRow("grdFormSetting", searchText);
+        }
+    });
+</script>

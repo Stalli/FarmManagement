@@ -1,0 +1,116 @@
+﻿@model TransectionPersonalAccountModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateTransectionPersonalAccount", "LoanManagement", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form form-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Employee Type</label>
+                    <div class="col-md-7">
+                        <input id="drpEmployeeType" class="form-control-input" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeId)
+                    <div class="col-md-7">
+                        <input id="drpAccountAllEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        @Html.ValidationMessageFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.AccountTransectionType)
+                    <div class="col-md-7">
+                        <input id="drpTransectionType" name="AccountTransectionType" required class="form-control-input" value="@Model.AccountTransectionType" />
+                        @Html.ValidationMessageFor(x => x.AccountTransectionType)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Amount)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Amount)
+                        @Html.ValidationMessageFor(x => x.Amount)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Date)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Date, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.Date)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnTransectionPersonalAccount" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindTransectionType("drpTransectionType");
+        bindEmployeeTypeWithEmployee("drpEmployeeType", "drpAccountAllEmp");
+
+        $("#btnTransectionPersonalAccount").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+
+

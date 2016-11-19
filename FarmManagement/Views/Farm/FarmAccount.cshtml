@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Account";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateAccount(0)">
+            Add New Account
+        </button>
+    </div>
+
+    <div id="grdAccount">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterAccountRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdAccount").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("FarmAccountAjax", "Farm")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Farm Name" },
+				{ field: "InsertDate", title: "Created On", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: getEditButton("createUpdateAccount(#=Id#)")
+                }]
+            });
+        });
+
+        function createUpdateAccount(id) {
+            kendo.ui.progress($("#grdAccount"), true);
+            $.get('@Url.Action("CreateUpdateFarmAccount", "Farm")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Account" : "Create New Account");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdAccount", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterAccountRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdAccount').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "InsertDate"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdAccount"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdAccount", searchText);
+            }
+        });
+
+    </script>
+}

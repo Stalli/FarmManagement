@@ -1,0 +1,99 @@
+﻿@model TemporaryEmployeeSalaryModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateTemporaryEmployeeSalary", "Salary", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form  form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Year)
+                    <div class="col-md-7">
+                        <input id="drpTempSalaryYear" name="Year" class="form-control-input" required value="@Model.Year" />
+                        @Html.ValidationMessageFor(x => x.Year)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Month)
+                    <div class="col-md-7">
+                        <input id="drpTempSalaryMonth" name="Month" class="form-control-input" value="@Model.Month" />
+                        @Html.ValidationMessageFor(x => x.Month)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.MorningWages)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.MorningWages)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.NightWages)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.NightWages)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnTempWages" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        bindYear("drpTempSalaryYear");
+        bindMonth("drpTempSalaryMonth");
+
+        $("#btnTempWages").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+

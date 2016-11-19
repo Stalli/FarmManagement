@@ -1,0 +1,107 @@
+@{
+    ViewBag.Title = "Paid Loan";
+}
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="createUpdatePaidLoan(0)">
+        Add New Paid Loan
+    </button>
+</div>
+
+<div id="grdPaidLoan">
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+	
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterPaidLoanRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdPaidLoan").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("PaidLoanAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "LoanId", title: "Loan Id" },
+                { field: "Name", title: "Employee Name" },
+				{ field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "Year", title: "Year"},
+				{ field: "Month", title: "Month"},
+				{ field: "Amount", title: "Amount"},
+				{
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: getEditButton('createUpdatePaidLoan(#=Id#)') + getDeleteButton('deletePaidLoan(#=Id#)')
+                }]
+            });
+        });
+		
+		function deletePaidLoan(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Paid Loan ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdPaidLoan"), true);
+                $.get('@Url.Action("DeletePaidLoan", "LoanManagement")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdPaidLoan");
+                });
+            }
+        }
+        function createUpdatePaidLoan(id) {
+            kendo.ui.progress($("#grdPaidLoan"), true);
+            $.get('@Url.Action("CreateUpdatePaidLoan", "LoanManagement")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Paid Loan" : "Create New Paid Loan");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+		
+		function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdPaidLoan", "divModalWindow");
+        }
+
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterPaidLoanRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdPaidLoan').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["LoanId", "Name", "Date", "Year", "Month", "Amount"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdPaidLoan"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdPaidLoan", searchText);
+            }
+        });
+
+    </script>
+}

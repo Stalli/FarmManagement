@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Employee";
+}
+
+@section head{
+    <style type="text/css">
+        .popover-content > label {
+            width: 45%;
+        }
+    </style>
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateEmployee(0)">
+            Add New Employee
+        </button>
+    </div>
+
+    <div id="grdEmployee">
+    </div>
+
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterEmployees(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdEmployee").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("EmployeeAjax", "Employee")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                dataBound: bindEmployeeInfo,
+                columns: [
+                { field: "RoleName", title: "Role" },
+                { field: "Name", title: "Name" },
+                { field: "FatherName", title: "Father <br> Name" },
+                { field: "Email", title: "Email" },
+                { field: "Gender", title: "Gender" },
+                { field: "MaritalStatus", title: "Marital <br> Status" },
+                { field: "DateOfBirth", title: "Date Of <br> Birth", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "PlaceOfBirth", title: "Place Of <br> Birth" },
+                { field: "PermanentAddress", title: "Permanent <br> Address" },
+                { field: "DateOfJoining", title: "Date Of <br> Joining", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "ResignationDate", title: "Resignation <br> Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "IsTemporaryEmployee", title: "Is Temporary <br> Employee" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 200,
+                    template: function (dataItem) { return employeeDetail(dataItem) }
+                }]
+            });
+
+            $('body').on('click', function (e) {
+                $('[data-toggle="popover"]').each(function () {
+                    //the 'is' for buttons that trigger popups
+                    //the 'has' for icons within a button that triggers a popup
+                    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                        $(this).popover('hide');
+                    }
+                });
+            });
+        });
+
+        function employeeDetail(dataItem) {
+            var myMappings = [{ Name: "CNIC", Value: dataItem.CNIC }, { Name: "Contact No", Value: dataItem.ContactNo }, { Name: "Current Address", Value: dataItem.CurrentAddress },
+                              { Name: "Nationality", Value: dataItem.Nationality }, { Name: "Status", Value: dataItem.Status }, { Name: "Position", Value: dataItem.Position },
+                              { Name: "Landline", Value: dataItem.Landline }, { Name: "Department", Value: dataItem.Department }, { Name: "Farm Name", Value: dataItem.FarmName }];
+
+            var employeeInfo = getInfoInPopup(myMappings);
+            var info = getInfoIcon(employeeInfo);
+            info += getEditButton(String.format('createUpdateEmployee({0})', dataItem.Id));
+
+            return info;
+        }
+        function bindEmployeeInfo() {
+            setTimeout(function () { $("[data-toggle='popover']").popover({ html: true, placement: "left", container: "body" }) }, 1000);
+        }
+
+        function createUpdateEmployee(id) {
+            kendo.ui.progress($("#grdEmployee"), true);
+            $.get('@Url.Action("CreateUpdateEmployee", "Employee")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Employee" : "Create New Employee");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdEmployee", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterEmployees() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdEmployee').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["RoleName", "Name", "CNIC", "Gender", "MaritalStatus", "PlaceOfBirth", "DateOfJoining", "ResignationDate", "Status", "Position", "IsTemporaryEmployee"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdEmployee"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdEmployee", searchText, true);
+            }
+        });
+
+    </script>
+}

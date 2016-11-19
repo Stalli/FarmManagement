@@ -1,0 +1,182 @@
+﻿@model LoanManagementModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateLoanManagement", "LoanManagement", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form  form-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeId)
+                    <div class="col-md-7">
+                        @if (Model.IsTemporaryEmployee)
+                        {
+                            <input id="drpTempEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        }
+                        else
+                        {
+                            <input id="drpPermanetEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        }
+                        @Html.ValidationMessageFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanAmount)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanAmount)
+                        @Html.ValidationMessageFor(x => x.LoanAmount)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.NoOfInstallment)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.NoOfInstallment)
+                        @Html.ValidationMessageFor(x => x.NoOfInstallment)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PerMonthOrYear)
+                    <div class="col-md-7">
+                        @Html.RadioButtonFor(x => x.PerMonthOrYear, true) @LoanReturn.PerYear
+                        @Html.RadioButtonFor(x => x.PerMonthOrYear, false) @LoanReturn.PerMonth
+                        @Html.ValidationMessageFor(x => x.PerMonthOrYear)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanStartDate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanStartDate, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.LoanStartDate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanEndDate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanEndDate, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.LoanEndDate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.GetCustomLabelFor(x => x.IntersetRate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.IntersetRate)
+                        @Html.ValidationMessageFor(x => x.IntersetRate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanStatus)
+                    <div class="col-md-7">
+                        <input id="drpLoanStatus" name="LoanStatus" class="form-control-input" value="@Model.LoanStatus" />
+                        @Html.ValidationMessageFor(x => x.LoanStatus)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.DebtSalary)
+                    <div class="col-md-7">
+                        @Html.RadioButtonFor(x => x.DebtSalary, true) Yes
+                        @Html.RadioButtonFor(x => x.DebtSalary, false) No
+                        @Html.ValidationMessageFor(x => x.DebtSalary)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.GetCustomLabelFor(x => x.Description, new { @class = "col-lg-3" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(x => x.Description)
+                @Html.ValidationMessageFor(x => x.Description)
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnLoan" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text'], .modal-dialog textarea").not(".date-picker").addClass("form-control");
+        $(".modal-dialog .date-picker").addClass("form-control-input");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindLoanStatus("drpLoanStatus");
+
+        @if (Model.IsTemporaryEmployee)
+        {
+         <text> bindEmployeeAccordingToType("drpTempEmp", '@((int)EmployeeType.Temporary)'); </text>
+        }
+        else
+        {
+         <text> bindEmployeeAccordingToType("drpPermanetEmp", '@((int)EmployeeType.Permanent)'); </text>
+        }
+
+
+        $("#btnLoan").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+</script>

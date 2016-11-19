@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Vendor Management";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateVendor(0)">
+            Add New Vendor
+        </button>
+    </div>
+
+    <div id="grdVendor">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterVendorRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdVendor").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("VendorAjax", "Vendor")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Name" },
+				{ field: "CompanyName", title: "Company Name" },
+                { field: "PhoneNo", title: "Phone No" },
+                { field: "PersonalPhoneNo", title: "Personal PhoneNo" },
+                { field: "AddressInfo", title: "Address Info" },
+                { field: "OpeningBalance", title: "Opening Balance" },
+                { field: "Type", title: "Type" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "OtherDescription", title: "Other Description" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return vendorAction(dataItem) }
+                }]
+            });
+        });
+
+        function vendorAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateVendor({0})", dataItem.Id));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteVendor({0})", dataItem.Id));
+            }
+            return action;
+        }
+
+        function deleteVendor(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Vendor ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdVendor"), true);
+                $.get('@Url.Action("DeleteVendor", "Vendor")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdVendor");
+                });
+            }
+        }
+        function createUpdateVendor(id) {
+            kendo.ui.progress($("#grdVendor"), true);
+            $.get('@Url.Action("CreateUpdateVendor", "Vendor")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Vendor" : "Create New Vendor");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdVendor", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterVendorRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdVendor').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "CompanyName", "PhoneNo", "PersonalPhoneNo", "AddressInfo", "OpeningBalance", "OtherDescription", "Type", "Date"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdVendor"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdVendor", searchText);
+            }
+        });
+
+    </script>
+}

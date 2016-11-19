@@ -1,0 +1,163 @@
+﻿@model VendorModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateVendor", "Expense", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+
+    <div class="modal-form form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Name)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.Name)
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.CompanyName)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.CompanyName)
+                        @Html.ValidationMessageFor(x => x.CompanyName)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PhoneNo)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.PhoneNo)
+                        @Html.ValidationMessageFor(x => x.PhoneNo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PersonalPhoneNo)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.PersonalPhoneNo)
+                        @Html.ValidationMessageFor(x => x.PersonalPhoneNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.OpeningBalance)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.OpeningBalance)
+                        @Html.ValidationMessageFor(x => x.OpeningBalance)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.AddressInfo)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.AddressInfo)
+                        @Html.ValidationMessageFor(x => x.AddressInfo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.VendorType)
+                    <div class="col-md-8">
+                        <input id="drpVendorType" name="VendorType" class="form-control-input" value="@Model.VendorType" />
+                        @Html.ValidationMessageFor(x => x.VendorType)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Date)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.Date, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.Date)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.OtherDescription)
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(x => x.OtherDescription)
+                        @Html.ValidationMessageFor(x => x.OtherDescription)
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" id="btnCrop" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".modal-dialog input[type='text'], .modal-dialog textarea").not(".date-picker").addClass("form-control");
+        $(".modal-dialog .date-picker").addClass("form-control-input");
+        $(".modal-dialog label").addClass("col-md-4");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindVendorType("drpVendorType");
+
+        $("#btnCrop").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+
+</script>
+
+

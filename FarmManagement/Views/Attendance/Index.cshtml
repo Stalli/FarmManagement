@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Attendance";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget box form-horizontal">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>Detail
+                </h4>
+            </div>
+            <div class="widget-content">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <span class="help-block blackfont">Year</span>
+                            <input id="drpYear" class="form-control-input" required />
+                        </div>
+                        <div class="col-md-3">
+                            <span class="help-block blackfont">Month</span>
+                            <input id="drpMonth" class="form-control-input" required />
+                        </div>
+                        <div class="col-md-3">
+                            <span class="help-block blackfont">Type Of Staff</span>
+                            <input id="drpEmployeeType" class="form-control-input" required />
+                        </div>
+                        <div class="col-md-3">
+                            <span class="help-block blackfont">Employee</span>
+                            <input id="drpEmployee" class="form-control-input" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input type="button" value="Filter" id="btnFilter" class="btn btn-primary pull-right">
+                </div>
+            </div>
+        </div>
+        <div id="divEmployee" style="display:none">
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            bindYear("drpYear");
+            bindMonth("drpMonth");
+            bindEmployeeTypeWithEmployee("drpEmployeeType", "drpEmployee");
+
+            $("#btnFilter").click(function () {
+                $("#divEmployee").hide();
+
+                var year = $("#drpYear").val();
+                var month = $("#drpMonth").val();
+                var employeeType = $("#drpEmployeeType").val();
+                var employeeId = $("#drpEmployee").val();
+
+                if (year > 0 && month > 0 && employeeType > 0 && employeeId > 0) {
+                    var filters = { year: year, month: month, employeeType: employeeType, employeeId: employeeId };
+                    $.get('@Url.Action("GetEmployeePartial", "Attendance")', filters, function (partialView) {
+                        $("#divEmployee").html(partialView);
+                        $("#divEmployee").show();
+                    });
+                }
+            })
+
+            $("#drpYear, #drpMonth, #drpEmployeeType, #drpEmployee").change(function () {
+                $("#divEmployee").hide();
+            });
+        });
+    </script>
+}

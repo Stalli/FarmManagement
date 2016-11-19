@@ -1,0 +1,125 @@
+@{
+    ViewBag.Title = "Loan Management";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateLoan(0, false)">
+            Add Permanent Employee Loan
+        </button>
+        <button type="button" class="btn btn-primary" onclick="createUpdateLoan(0, true)">
+            Add Temporary Employee Loan
+        </button>
+    </div>
+
+    <div id="grdLoanManagement">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterLoanManagementRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdLoanManagement").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("LoanManagementAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+				{ field: "Name", title: "Employee" },
+                { field: "IsTemporaryEmployee", title: "Is Temporary <br> Employee", template: "#= IsTemporaryEmployee ? 'Yes' : 'No'  #" },
+				{ field: "LoanAmount", title: "Loan Amount" },
+                { field: "PerMonthOrYear", title: "Loan Return" },
+				{ field: "NoOfInstallment", title: "No Of Installment" },
+                { field: "IntersetRate", title: "Interset Rate" },
+                { field: "Status", title: "Status" },
+				{ field: "LoanStartDate", title: "Start Date", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "LoanEndDate", title: "End Date", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "Description", title: "Description" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return showLoanDetail(dataItem) }
+                }]
+            });
+        });
+
+        function showLoanDetail(dataItem) {
+            var info = String.format("<a href='javascript:;' onclick='createUpdateLoan({0},{1})' class='k-button k-button-icontext'>", dataItem.Id, dataItem.IsTemporaryEmployee);
+            info += "<span class='k-icon k-edit'></span>Edit</a>";
+            if (!dataItem.IsDelete) {
+                info += getDeleteButton(String.format('deleteLoan({0})', dataItem.Id));
+            }
+            return info;
+        }
+
+        function deleteLoan(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Loan ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdLoanManagement"), true);
+                $.get('@Url.Action("DeleteLoanManagement", "LoanManagement")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdLoanManagement");
+                });
+            }
+        }
+        function createUpdateLoan(id, isTempEmployee) {
+            kendo.ui.progress($("#grdLoanManagement"), true);
+            $.get('@Url.Action("CreateUpdateLoanManagement", "LoanManagement")', { id: id, isTempEmployee: isTempEmployee }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Loan" : "Create New Loan");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdLoanManagement", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterLoanManagementRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdLoanManagement').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "LoanAmount", "NoOfInstallment", "PerMonthOrYear", "LoanStartDate", "LoanEndDate", "Description", "IntersetRate", "Status"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdLoanManagement"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdLoanManagement", searchText);
+            }
+        });
+
+    </script>
+}

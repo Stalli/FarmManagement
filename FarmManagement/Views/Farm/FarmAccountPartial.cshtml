@@ -1,0 +1,48 @@
+﻿@model AccountViewModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateFarmAccount", "Farm", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+
+    <div class="modal-form form-body">
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.Name)
+            <div class="col-md-8">
+                @Html.TextBoxFor(x => x.Name)
+                @Html.ValidationMessageFor(x => x.Name)
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" id="btnAccount" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-4");
+    });
+</script>

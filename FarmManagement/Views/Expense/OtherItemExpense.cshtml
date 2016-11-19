@@ -1,0 +1,108 @@
+@{
+    ViewBag.Title = "Other Item Expense";
+}
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="createUpdateOtherExpense(0)">
+        Add New Other Expense
+    </button>
+</div>
+
+<div id="grdOtherExpense">
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterOtherExpenseRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdOtherExpense").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("OtherItemExpenseAjax", "Expense")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+                { field: "Expense", title: "Account" },
+                { field: "TitleExpense", title: "Other Item" },
+                { field: "Amount", title: "Amount" },
+				{ field: "Description", title: "Description" },
+                { field: "PayByName", title: "Paid By" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+				{
+				    title: "Action",
+				    sortable: false,
+				    filterable: false,
+				    width: 180,
+				    template: getEditButton('createUpdateOtherExpense(#=Id#)') + getDeleteButton('deleteOtherExpense(#=Id#)')
+				}]
+            });
+        });
+
+        function deleteOtherExpense(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Other Expense ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdOtherExpense"), true);
+                $.get('@Url.Action("DeleteOtherItemExpense", "Expense")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdOtherExpense");
+                });
+            }
+        }
+        function createUpdateOtherExpense(id) {
+            kendo.ui.progress($("#grdOtherExpense"), true);
+            $.get('@Url.Action("CreateUpdateOtherItemExpense", "Expense")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Other Expense" : "Create New Other Expense");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdOtherExpense", "divModalWindow");
+        }
+
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterOtherExpenseRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdOtherExpense').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["TitleExpense", "Amount", "Description", "Date", "PayByName"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdOtherExpense"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdOtherExpense", searchText);
+            }
+        });
+
+    </script>
+}

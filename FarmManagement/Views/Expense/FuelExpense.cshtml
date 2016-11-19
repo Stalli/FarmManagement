@@ -1,0 +1,110 @@
+@{
+    ViewBag.Title = "Fuel Expense";
+}
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="createUpdateFuelExpense(0)">
+        Add New Fuel Expense
+    </button>
+</div>
+
+<div id="grdFuelExpense">
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterFuelExpenseRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdFuelExpense").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("FuelExpenseAjax", "Expense")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+                { field: "AreaName", title: "Area Name" },
+                { field: "Expense", title: "Account" },
+                { field: "CropName", title: "Crop Name" },
+                { field: "FuelName", title: "Fuel Name" },
+				{ field: "Quantity", title: "Quantity" },
+				{ field: "UserName", title: "Person Name" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+				{ field: "Description", title: "Description" },
+				{
+				    title: "Action",
+				    sortable: false,
+				    filterable: false,
+				    width: 180,
+				    template: getEditButton('createUpdateFuelExpense(#=Id#)') + getDeleteButton('deleteFuelExpense(#=Id#)')
+				}]
+            });
+        });
+
+        function deleteFuelExpense(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Fuel Expense ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdFuelExpense"), true);
+                $.get('@Url.Action("DeleteFuelExpense", "Expense")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdFuelExpense");
+                });
+            }
+        }
+        function createUpdateFuelExpense(id) {
+            kendo.ui.progress($("#grdFuelExpense"), true);
+            $.get('@Url.Action("CreateUpdateFuelExpense", "Expense")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Fuel Expense" : "Create New Fuel Expense");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdFuelExpense", "divModalWindow");
+        }
+
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterFuelExpenseRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdFuelExpense').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "Quantity", "UserName", "Date", "Description"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdFuelExpense"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdFuelExpense", searchText);
+            }
+        });
+
+    </script>
+}

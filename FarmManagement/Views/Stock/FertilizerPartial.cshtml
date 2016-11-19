@@ -1,0 +1,285 @@
+@model FertilizerModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+
+    .k-upload-files.k-reset {
+        display: none !important;
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateFertilizer", "Stock", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+
+    <div class="modal-form form-body">
+	   <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.UserId)
+                    <div class="col-md-7">
+                        <input id="drpUserId" name="UserId" class="form-control-input" value="@Model.UserId" />
+                        @Html.ValidationMessageFor(x => x.UserId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FarmId)
+                    <div class="col-md-7">
+                        <input id="drpFarmId" name="FarmId" class="form-control-input" value="@Model.FarmId" />
+                        @Html.ValidationMessageFor(x => x.FarmId)
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.AccountId)
+                    <div class="col-md-7">
+                        <input id="drpAccountId" name="AccountId" class="form-control-input" value="@Model.AccountId" />
+                        @Html.ValidationMessageFor(x => x.AccountId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FertilizerName)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.FertilizerName)
+                        @Html.ValidationMessageFor(x => x.FertilizerName)
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FertilizerQuality)
+                    <div class="col-md-7">
+                        <input id="drpFertilizerQuality" name="FertilizerQuality" class="form-control-input" value="@Model.FertilizerQuality" />
+                        @Html.ValidationMessageFor(x => x.FertilizerQuality)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FertilizerQuantity)
+                    <div class="col-md-7">
+                        <input id="drpFertilizerQuantity" name="FertilizerQuantity" class="form-control-input" value="@Model.FertilizerQuantity" />
+                        @Html.ValidationMessageFor(x => x.FertilizerQuantity)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.QuantityInNumber)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.QuantityInNumber)
+                        @Html.ValidationMessageFor(x => x.QuantityInNumber)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FertilizerType)
+                    <div class="col-md-7">
+                        <input id="drpFertilizerType" name="FertilizerType" class="form-control-input" value="@Model.FertilizerType" />
+                        @Html.ValidationMessageFor(x => x.FertilizerType)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Brand)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Brand)
+                        @Html.ValidationMessageFor(x => x.Brand)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.DatePurchase)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.DatePurchase, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.DatePurchase)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Price)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Price).IsReadonly(Model.Price > 0)
+                        @Html.ValidationMessageFor(x => x.Price)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                 <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PricePerItem)
+                     <div class="col-md-7">
+                         @Html.TextBoxFor(x => x.PricePerItem).IsReadonly(true)
+                     </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.VendorId)
+                    <div class="col-md-7">
+                        <input id="drpVendorId" name="VendorId" class="form-control-input" value="@Model.VendorId" />
+                        @Html.ValidationMessageFor(x => x.VendorId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.OtherDescription)
+                    <div class="col-md-7">
+                        @Html.TextAreaFor(x => x.OtherDescription)
+                        @Html.ValidationMessageFor(x => x.OtherDescription)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.GetCustomLabelFor(x => x.PaymentBill, new { @class = "col-lg-2" })
+            <div class="col-md-10">
+                <input name="file" id="PaymentBill" type="file" accept="image/*" />
+                @Html.ValidationMessageFor(x => x.PaymentBill)
+            </div>
+        </div>
+        <div id="divfiles">
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" id="btnFertilizer" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.FertilizerGuid)
+}
+
+<script>
+    $(document).ready(function () {
+
+        deleteAllFiles();
+
+        $(".modal-dialog input[type='text'], .modal-dialog textarea").not(".date-picker").addClass("form-control");
+        $(".modal-dialog .date-picker").addClass("form-control-input");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+		bindEmployeeAccordingToType("drpUserId", '@((int)EmployeeType.Permanent)');
+        bindQuality("drpFertilizerQuality");
+        bindFertilizerQuantity("drpFertilizerQuantity");
+        bindFertilizerType("drpFertilizerType");
+		
+		bindFarm("drpFarmId");
+        bindAccount("drpAccountId");
+        bindVendor("drpVendorId");
+		
+        $("#Price, #QuantityInNumber").change(function () {
+            var totalValue = parseFloat($("#Price").val());
+            var quantityInNo = parseFloat($("#QuantityInNumber").val());
+            if ((totalValue != '' && !isNaN(totalValue)) && (quantityInNo != '' && !isNaN(quantityInNo))) {
+                $("#PricePerItem").val(totalValue / quantityInNo);
+            }
+        });
+
+        getFiles();
+
+        $("#PaymentBill").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.Fertilizer.ToString()' + '&guid=' + $("#FertilizerGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getFiles();
+            }
+        });
+
+		$("#btnFertilizer").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+			
+			$("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+			
+			if ($("#divfiles tr").length < 2) {
+			    showErrorMessage("Please upload the payment bill.");
+			    event.preventDefault();
+			}
+        });
+    });
+
+    function downloadFile(id) {
+        location.href = '@Url.Action("DownloadFile", "FileUpload")?Id=' + id;
+    }
+    function deleteFile(id) {
+        var shouldDelete = confirm("Are you sure, you want to remove selected File?");
+        if (!shouldDelete) return;
+
+        $.get("@Url.Action("DeleteFile", "FileUpload")", { Id: id }, function () {
+            getFiles();
+        }, 'json');
+    }
+
+    function getFiles() {
+        $.get('@Url.Action("GetFiles", "FileUpload")', {}, function (html) {
+            $("#divfiles").html(html);
+
+            if ($("#divfiles tr").length > 1) {
+                $(".k-upload").hide();
+                $("#divfiles").show();
+            }
+            else {
+                $(".k-upload").show();
+                $("#divfiles").hide();
+            }
+        });
+    }
+</script>

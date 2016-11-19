@@ -1,0 +1,156 @@
+﻿@model PaidLoanModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdatePaidLoan", "LoanManagement", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form  form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Year)
+                    <div class="col-md-7">
+                        <input id="drpPaidLoanYear" name="Year" class="form-control-input" required value="@Model.Year" />
+                        @Html.ValidationMessageFor(x => x.Year)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Month)
+                    <div class="col-md-7">
+                        <input id="drpdPaidLoanMonth" name="Month" class="form-control-input" required value="@Model.Month" />
+                        @Html.ValidationMessageFor(x => x.Month)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeId)
+                    <div class="col-md-7">
+                        <input id="drpPaidLoanEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        @Html.ValidationMessageFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanId)
+                    <div class="col-md-7">
+                        <input id="drpPaidLoanId" name="LoanId" class="form-control-input" required value="@Model.LoanId" />
+                        @Html.ValidationMessageFor(x => x.LoanId)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.AccountId)
+                    <div class="col-md-7">
+                        <input id="drpAccountId" name="AccountId" class="form-control-input" value="@Model.AccountId" />
+                        @Html.ValidationMessageFor(x => x.AccountId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Amount)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Amount)
+                        @Html.ValidationMessageFor(x => x.Amount)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Date)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Date, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.Date)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnPaidLoan" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindYear("drpPaidLoanYear");
+        bindMonth("drpdPaidLoanMonth");
+        bindAccount("drpAccountId");
+        bindEmployeeAccordingToType("drpPaidLoanEmp", '@((int)EmployeeType.Permanent)');
+        bindLoanEmployeesWithCallback("drpPaidLoanId", function () { GetLoanManagementAmount($("#drpPaidLoanId").data("kendoDropDownList").value()) });
+
+        $("#btnPaidLoan").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+
+    function GetLoanManagementAmount(loanId) {
+        $.ajax({
+            url: "/LoanManagement/LoanAmountAjax/?loanId=" + loanId,
+            //loanId: loanId,
+            success: function (amount) {
+                debugger;
+                $('#Amount').val(amount.Data);
+                },
+            error: function () {
+                showErrorMessage("An error occured on retrieving loan amount of loan id = " + loanId);
+                }
+            });
+    };
+</script>
+
+

@@ -1,0 +1,114 @@
+@{
+    ViewBag.Title = "LoanReturn Management";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateLoanReturn(0)">
+            Add New LoanReturn
+        </button>
+    </div>
+
+    <div id="grdLoanReturn">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterLoanReturnRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdLoanReturn").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("LoanReturnAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "LoanId", title: "LoanId " },
+				{ field: "Name", title: "User" },
+                { field: "Expense", title: "Account" },                
+                { field: "InstallmentAmount", title: "Installment Amount" },                
+				{ field: "PaidDate", title: "PaidDate", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return LoanReturnAction(dataItem) }
+                }]
+            });
+        });
+
+        function LoanReturnAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateLoanReturn({0})", dataItem.Id));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteLoanReturn({0})", dataItem.Id));
+            }
+            return action;
+        }
+
+        function deleteLoanReturn(id) {
+            var confirmMessage = confirm("Are you sure to remove selected LoanReturn ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdLoanReturn"), true);
+                $.get('@Url.Action("DeleteLoanReturn", "LoanManagement")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdLoanReturn");
+                });
+            }
+        }
+        function createUpdateLoanReturn(id) {
+            kendo.ui.progress($("#grdLoanReturn"), true);
+            $.get('@Url.Action("CreateUpdateLoanReturn", "LoanManagement")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update LoanReturn" : "Create New LoanReturn");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdLoanReturn", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterLoanReturnRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdLoanReturn').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["LoanId", "InstallmentAmount", "Expense", "Name", "PaidDate"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdLoanReturn"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdLoanReturn", searchText);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,275 @@
+﻿@model PermanentEmployeeSalaryModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdatePermanentEmployeeSalary", "Salary", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Year)
+                    <div class="col-md-7">
+                        <input id="drpPermanetSalaryYear" name="Year" class="form-control-input" required value="@Model.Year" />
+                        @Html.ValidationMessageFor(x => x.Year)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Month)
+                    <div class="col-md-7">
+                        <input id="drpPermanentSalaryMonth" name="Month" class="form-control-input" value="@Model.Month" />
+                        @Html.ValidationMessageFor(x => x.Month)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeId)
+                    <div class="col-md-7">
+                        <input id="drpPermanentSalaryEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        @Html.ValidationMessageFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.BasicSalary)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.BasicSalary)
+                        @Html.ValidationMessageFor(x => x.BasicSalary)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Date)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Date, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.Date)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                @*<div class="form-group">
+                    @Html.GetCustomLabelFor(x => x.IsAllowFund)
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(x => x.IsAllowFund)
+                        @Html.ValidationMessageFor(x => x.IsAllowFund)
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.TA_DA)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.TA_DA)
+                        @Html.ValidationMessageFor(x => x.TA_DA)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.GetCustomLabelFor(x => x.Bonus)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Bonus)
+                        @Html.ValidationMessageFor(x => x.Bonus)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.MedicalAllowance)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.MedicalAllowance)
+                        @Html.ValidationMessageFor(x => x.MedicalAllowance)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                @*<div class="form-group">
+                    @Html.CustomLabelFor(x => x.TA_DA)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.TA_DA)
+                        @Html.ValidationMessageFor(x => x.TA_DA)
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.UtilityAllowance)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.UtilityAllowance)
+                        @Html.ValidationMessageFor(x => x.UtilityAllowance)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.HouseRent)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.HouseRent)
+                        @Html.ValidationMessageFor(x => x.HouseRent)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanReceived)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanReceived).IsReadonly(true)
+                        @Html.ValidationMessageFor(x => x.LoanReceived)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanReturned)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanReturned).IsReadonly(true)
+                        @Html.ValidationMessageFor(x => x.LoanReturned)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanRemaining)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.LoanRemaining).IsReadonly(true)
+                        @Html.ValidationMessageFor(x => x.LoanRemaining)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <label><strong>Deduction:</strong></label>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.ProvidentFund)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.ProvidentFund)@*.IsReadonly(true)*@
+                        @Html.ValidationMessageFor(x => x.ProvidentFund)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Penality)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Penality)
+                        @Html.ValidationMessageFor(x => x.Penality)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button id="btnPermanentSalary" type="submit" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        bindEmployeeAccordingToType("drpPermanentSalaryEmp", '@((int)EmployeeType.Permanent)');
+
+        $(".date-picker").kendoDatePicker();
+
+        bindYear("drpPermanetSalaryYear");
+        bindMonth("drpPermanentSalaryMonth");
+
+        $("#btnPermanentSalary").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+
+        $("#IsAllowFund").change(function () {
+
+            var basicSalary = parseFloatValue($("#BasicSalary").val());
+
+            var isAllowFund = $("#IsAllowFund").is(":checked") == true;
+            if (!isAllowFund) {
+                var providentFund = parseFloatValue($("#ProvidentFund").val());
+                $("#HouseRent, #UtilityAllowance, #ProvidentFund, #MedicalAllowance, #TA_DA, #Bonus").val("");
+                $("#BasicSalary").val(basicSalary - providentFund);
+                return;
+            }
+
+            var houseRent = (basicSalary * 16) / 100;
+            var utilityAllownace = (basicSalary * 16) / 100;
+            var providentFund = (basicSalary * 16) / 100;
+
+            $("#HouseRent").val(houseRent);
+            $("#UtilityAllowance").val(utilityAllownace);
+            $("#ProvidentFund").val(providentFund);
+
+            //var totalSalary = basicSalary + ((houseRent + utilityAllownace) - providentFund);
+            var bonus = parseFloatValue($("#Bonus").val());
+            var medical = parseFloatValue($("#MedicalAllowance").val());
+            var tada = parseFloatValue($("#TA_DA").val());
+
+            totalSalary += bonus + medical + tada;
+
+            $("#BasicSalary").val(totalSalary);
+        });
+    });
+</script>
+

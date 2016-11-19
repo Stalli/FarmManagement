@@ -1,0 +1,32 @@
+﻿@model Dictionary<String, List<FormSettingModel>>
+
+<ul id="nav">
+    @foreach (var menu in Model)
+    {
+        if (menu.Value.Count == 1)
+        {
+            var firstMenu = menu.Value.First();
+            <li id="li_@menu.Key">
+                <a href='@Url.Action(firstMenu.ActionName,firstMenu.ControllerName)'>
+                    <i class="icon-dashboard"></i>@firstMenu.Name
+                </a>
+            </li>
+        }
+        else
+        {
+            <li id="li_master_@menu.Key">
+                <a href="javascript:void(0);"><i class="icon-edit"></i>@menu.Key</a>
+                <ul class="sub-menu">
+                    @foreach (var subMenu in menu.Value)
+                    {
+                        <li class="li_master_@subMenu.Name">
+                            <a id="link_master_department" href='@Url.Action(subMenu.ActionName.ToString(),subMenu.ControllerName)'>
+                                <i class="icon-angle-right"></i>@subMenu.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+</ul>

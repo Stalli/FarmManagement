@@ -1,0 +1,117 @@
+@{
+    ViewBag.Title = "Other Item";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateOtherItem(0)">
+            Add New Other Item
+        </button>
+    </div>
+
+    <div id="grdOtherItem">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterOtherItemRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdOtherItem").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("OtherItemAjax", "Stock")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "FarmName", title: "Farm Name" },
+                { field: "Expense", title: "Account" },
+				{ field: "TitleExpense", title: "Title Expense" },
+				{ field: "Description", title: "Description" },
+                { field: "Price", title: "Price" },
+                { field: "TotalLeft", title : "Total Left"},
+                { field: "DatePurchase", title: "Date Purchase", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return otherItemAction(dataItem) }
+                }]
+            });
+        });
+
+        function otherItemAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateOtherItem({0})", dataItem.ItemId));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteOtherItem({0})", dataItem.ItemId));
+            }
+            return action;
+        }
+
+        function deleteOtherItem(ItemId) {
+            var confirmMessage = confirm("Are you sure to remove selected OtherItem ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdOtherItem"), true);
+                $.get('@Url.Action("DeleteOtherItem", "Stock")', { id: ItemId }, function (response) {
+                    showMessageRebindGrid(response, "grdOtherItem");
+                });
+            }
+        }
+        function createUpdateOtherItem(ItemId) {
+            kendo.ui.progress($("#grdOtherItem"), true);
+            $.get('@Url.Action("CreateUpdateOtherItem", "Stock")', { id: ItemId }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(ItemId > 0 ? "Update OtherItem" : "Create New OtherItem");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdOtherItem", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterOtherItemRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdOtherItem').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["TitleExpense", "Description", "Price", "DatePurchase"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdOtherItem"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdOtherItem", searchText);
+            }
+        });
+
+    </script>
+}

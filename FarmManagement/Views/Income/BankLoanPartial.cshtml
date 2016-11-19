@@ -1,0 +1,169 @@
+﻿@model LoanReceivableFromBankModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdateBankLoan", "LoanManagement", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+
+    <div class="modal-form form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.AccountId)
+                    <div class="col-md-8">
+                        <input id="drpAccountId" name="AccountId" class="form-control-input" value="@Model.AccountId" />
+                        @Html.ValidationMessageFor(x => x.AccountId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanId)
+                    <div class="col-md-8">
+                        <input id="drpLoanId" name="LoanId" class="form-control-input" value="@Model.LoanId" />
+                        @Html.ValidationMessageFor(x => x.LoanId)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Amount)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.Amount)
+                        @Html.ValidationMessageFor(x => x.Amount)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.TotalAmountTobePaid)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.TotalAmountTobePaid)
+                        @Html.ValidationMessageFor(x => x.TotalAmountTobePaid)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.NoOfInstallment)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.NoOfInstallment)
+                        @Html.ValidationMessageFor(x => x.NoOfInstallment)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.InterestRate)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.InterestRate)
+                        @Html.ValidationMessageFor(x => x.InterestRate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanEndDate)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.LoanEndDate, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.LoanEndDate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.LoanReceiveDate)
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.LoanReceiveDate, new { @class = "date-picker" })
+                        @Html.ValidationMessageFor(x => x.LoanReceiveDate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.UserId)
+                    <div class="col-md-8">
+                        <input id="drpEmployeeId" name="UserId" class="form-control-input" value="@Model.UserId" />
+                        @Html.ValidationMessageFor(x => x.UserId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.GetCustomLabelFor(x => x.Description)
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(x => x.Description)
+                        @Html.ValidationMessageFor(x => x.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" id="btnEmployeeLoan" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".modal-dialog input[type='text'], .modal-dialog textarea").not(".date-picker").addClass("form-control");
+        $(".modal-dialog .date-picker").addClass("form-control-input");
+        $(".modal-dialog label").addClass("col-md-4");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindLoanEmployees("drpLoanId");
+        bindAccount("drpAccountId");
+        bindEmployeeAccordingToType("drpEmployeeId", '@((int)EmployeeType.Permanent)');
+
+        $("#btnEmployeeLoan").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            $("form").find("input.form-control-input").not(".date-picker").each(function () {
+                if ($(this).val() == "" || $(this).val() <= 0) {
+                    var name = $(this).attr("Id").replace('drp', '').replace('Id', '');
+                    showErrorMessage("Please select the " + name);
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    });
+
+</script>

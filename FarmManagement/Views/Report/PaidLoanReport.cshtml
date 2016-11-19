@@ -1,0 +1,85 @@
+@{
+    ViewBag.Title = "Paid Loan Report";
+}
+
+<div class="col-md-12 form-horizontal">
+    <div class="col-md-6">
+        <div class="widget box">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>Filters
+                </h4>
+            </div>
+            <div class="widget-content">
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> Print Type</label>
+                    <div class="col-md-9">
+                        <select id="drpPrintType" name="PrintType" class="form-control">
+                            <option>Pdf</option>
+                            <option>Excel</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Year</label>
+                    <div class="col-md-9">
+                        <input id="drpYear" name="Year" class="form-control-input" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Month</label>
+                    <div class="col-md-9">
+                        <input id="drpMonth" name="Month" class="form-control-input" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Employee</label>
+                    <div class="col-md-9">
+                        <input id="drpPaidLoanEmployee" name="Employee" class="form-control-input employee" />
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input id="btnReset" type="reset" class="btn btn-primary pull-right" value="Clear" />
+                    <input type="button" value="Print" id="btnPaidLoanReport" class="btn btn-primary pull-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".date-picker").kendoDatePicker({ value: new Date() });
+
+            bindAllEmployees("drpPaidLoanEmployee");
+            bindYear("drpYear");
+            bindMonth("drpMonth");
+
+            $("#btnPaidLoanReport").click(function () {
+                var isValid = true;
+
+                $(".form-horizontal").find("input.form-control-input").not(".employee").each(function () {
+                    if ($(this).val() == "" || $(this).val() <= 0) {
+                        var name = $(this).attr("Id").replace('drp', '');
+                        showErrorMessage("Please select the " + name);
+                        event.preventDefault();
+                        return isValid = false;
+                    }
+                });
+
+                if (isValid) {
+                    blockUI("body");
+
+                    var filter = {
+                        PrintType: $("#drpPrintType").val(), Employee: $("#drpPaidLoanEmployee").val(), Year: $("#drpYear").val(), Month: $("#drpMonth").val()
+                    };
+                    $.post('@Url.Action("GetPaidLoanReport", "Report")', { filter: filter }, function (response) {
+                        location.href = '@Url.Action("Download", "Report")';
+                        $.unblockUI();
+                    });
+                }
+            });
+        });
+    </script>
+}

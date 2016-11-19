@@ -1,0 +1,86 @@
+﻿@model TaskAssignmentModel
+
+@using (Ajax.BeginForm("CreateUpdateTask", "TaskAssignment", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form">
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.StaffNameId)
+            <div class="col-md-5">
+                <input id="drpStaff" name="StaffNameId" value="@Model.StaffNameId" />
+                @Html.ValidationMessageFor(x => x.StaffNameId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.TaskName)
+            <div class="col-md-5">
+                @Html.TextBoxFor(x => x.TaskName)
+                @Html.ValidationMessageFor(x => x.TaskName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.Description)
+            <div class="col-md-5">
+                @Html.TextAreaFor(x => x.Description)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.DeadlineStartDate)
+            <div class="col-md-5">
+                @Html.TextBoxFor(x => x.DeadlineStartDate, new { @class = "date-picker" })
+                @Html.ValidationMessageFor(x => x.DeadlineStartDate)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.DeadlineEndDate)
+            <div class="col-md-5">
+                @Html.TextBoxFor(x => x.DeadlineEndDate, new { @class = "date-picker" })
+                @Html.ValidationMessageFor(x => x.DeadlineEndDate)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.TaskStatus)
+            <div class="col-md-5">
+                <input id="drpTaskStatus" name="TaskStatus" value="@Model.TaskStatus" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.CustomLabelFor(x => x.TaskRemarks)
+            <div class="col-md-5">
+                <input id="drpTaskRemarks" name="TaskRemarks" value="@Model.TaskRemarks" />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" class="btn btn-primary">
+            @(Model.Id > 0 ? "Update" : "Create")
+        </button>
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog textarea").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-4");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindEmployeeAccordingToType("drpStaff", '@((int)EmployeeType.Permanent)');
+        bindTaskStatus("drpTaskStatus");
+        bindTaskRemarks("drpTaskRemarks");
+    });
+</script>

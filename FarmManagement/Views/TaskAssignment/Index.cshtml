@@ -1,0 +1,108 @@
+@{
+    ViewBag.Title = "Task Assignment";
+}
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="createUpdateTask(0)">
+        Add New Task
+    </button>
+</div>
+
+<div id="grdTaskAssignment">
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterTaskAssignmentRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdTaskAssignment").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("TaskAssignmentAjax", "TaskAssignment")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "TaskName", title: "Task Name" },
+                { field: "Name", title: "Staff Name" },
+                { field: "Description", title: "Description" },
+                { field: "DeadlineStartDate", title: "Start Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "DeadlineEndDate", title: "End Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "Status", title: "Status" },
+                { field: "Remarks", title: "Remarks" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: "<a href='javascript:;' onclick='createUpdateTask(#=Id#)' class='k-button k-button-icontext'><span class='k-icon k-edit'></span>Edit</a>" +
+                              "<a href='javascript:;' onclick='deleteTask(#=Id#)' class='k-button k-button-icontext'><span class='k-icon k-delete'></span>Delete</a>"
+                }]
+            });
+        });
+
+        function deleteTask(id) {
+            var confirmMessage = confirm("Are you sure to remove selected task ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdTaskAssignment"), true);
+                $.get('@Url.Action("DeleteTask", "TaskAssignment")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdTaskAssignment");
+                });
+            }
+        }
+        function createUpdateTask(id) {
+            kendo.ui.progress($("#grdTaskAssignment"), true);
+            $.get('@Url.Action("CreateUpdateTask", "TaskAssignment")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Task" : "Create New Task");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function filterTaskAssignmentRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdTaskAssignment').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["TaskName", "Name", "Description", "DeadlineStartDate", "DeadlineEndDate", "Status", "Remarks"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdTaskAssignment", "divModalWindow");
+        }
+
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdTaskAssignment"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdTaskAssignment", searchText);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,106 @@
+@{
+    ViewBag.Title = "Personal Account";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdatePersonalAccount(0)">
+            Add New Personal Account
+        </button>
+    </div>
+    <div id="grdPersonalAccount">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterPersonalAccountRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdPersonalAccount").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("PersonalAccountAjax", "LoanManagement")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "Employee Name" },
+				{ field: "OpeningBalance", title: "Opening Balance" },
+				{ field: "CreatedDate", title: "Created Date", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "ClosingDate", title: "Closing Date", type: "date", format: "{0:M/d/yyyy}" },
+				{
+				    title: "Action",
+				    sortable: false,
+				    filterable: false,
+				    width: 180,
+				    template: getEditButton('createUpdatePersonalAccount(#=Id#)') + getDeleteButton('deletePersonalAccount(#=Id#)')
+				}]
+            });
+        });
+
+        function deletePersonalAccount(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Personal Account ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdPersonalAccount"), true);
+                $.get('@Url.Action("DeletePersonalAccount", "LoanManagement")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdPersonalAccount");
+                });
+            }
+        }
+        function createUpdatePersonalAccount(id) {
+            kendo.ui.progress($("#grdPersonalAccount"), true);
+            $.get('@Url.Action("CreateUpdatePersonalAccount", "LoanManagement")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Personal Account" : "Create New Personal Account");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdPersonalAccount", "divModalWindow");
+        }
+
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterPersonalAccountRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdPersonalAccount').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Name", "OpeningBalance", "CreatedDate", "ClosingDate"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdPersonalAccount"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdPersonalAccount", searchText);
+            }
+        });
+
+    </script>
+}

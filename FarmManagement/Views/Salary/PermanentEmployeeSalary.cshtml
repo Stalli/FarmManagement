@@ -1,0 +1,117 @@
+@{
+    ViewBag.Title = "Permanent Empoyee Salary";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdatePermanentEmpSalary(0)">
+            Add New Empoyee Salary
+        </button>
+    </div>
+
+    <div id="grdPermanentEmployeeSalary">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterPermanentEmployeeSalaryRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdPermanentEmployeeSalary").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("PermanentEmployeeSalaryAjax", "Salary")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+				{ field: "Year", title: "Year" },
+				{ field: "Month", title: "Month" },
+				{ field: "Name ", title: "Employee" },
+				{ field: "BasicSalary", title: "Basic Salary" },
+                { field: "MedicalAllowance", title: "Medical Allowance" },
+                { field: "TA_DA", title: "T.A/D.A" },
+                { field: "Bonus", title: "Bonus" },
+				{ field: "HouseRent", title: "House Rent" },
+                { field: "UtilityAllowance", title: "Utility Allowance" },
+				{ field: "ProvidentFund ", title: "Provident Fund" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return showPermanentEmpSalaryDetail(dataItem) }
+                }]
+            });
+        });
+
+        function showPermanentEmpSalaryDetail(dataItem) {
+            var info = getEditButton(String.format('createUpdatePermanentEmpSalary({0})', dataItem.Id));
+            info += getDeleteButton(String.format('deletePermanentEmpSalary({0})', dataItem.Id));
+            return info;
+        }
+        function deletePermanentEmpSalary(id) {
+            var confirmMessage = confirm("Are you sure to remove selected record ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdPermanentEmployeeSalary"), true);
+                $.get('@Url.Action("DeletePermanentEmployeeSalary", "Salary")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdPermanentEmployeeSalary");
+                });
+            }
+        }
+        function createUpdatePermanentEmpSalary(id) {
+            kendo.ui.progress($("#grdPermanentEmployeeSalary"), true);
+            $.get('@Url.Action("CreateUpdatePermanentEmployeeSalary", "Salary")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Employee Salary" : "Create New Employee Salary");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdPermanentEmployeeSalary", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterPermanentEmployeeSalaryRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdPermanentEmployeeSalary').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Year", "Month", "Name", "BasicSalary", "Bonus", "MedicalAllowance", "TA_DA", "HouseRent", "UtilityAllowance", "ProvidentFund"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdPermanentEmployeeSalary"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdPermanentEmployeeSalary", searchText);
+            }
+        });
+
+    </script>
+}

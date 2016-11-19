@@ -1,0 +1,115 @@
+﻿@model PersonalAccountModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+</style>
+
+@using (Ajax.BeginForm("CreateUpdatePersonalAccount", "LoanManagement", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form  form-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Emloyee Type</label>
+                    <div class="col-md-7">
+                        <input id="drpEmployeeType" class="form-control-input" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeId)
+                    <div class="col-md-7">
+                        <input id="drpAllEmp" name="EmployeeId" class="form-control-input" value="@Model.EmployeeId" />
+                        @Html.ValidationMessageFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.CreatedDate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.CreatedDate, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.CreatedDate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.ClosingDate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.ClosingDate, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.ClosingDate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.OpeningBalance)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.OpeningBalance)
+                        @Html.ValidationMessageFor(x => x.OpeningBalance)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnPersonalAccount" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindEmployeeTypeWithEmployee("drpEmployeeType", "drpAllEmp");
+
+        $("#btnPersonalAccount").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            if ($("#drpEmployeeType").val() == "" || $("#drpEmployeeType").val() <= 0) {
+                showErrorMessage("Please select the Employee type.");
+                event.preventDefault();
+                return;
+            }
+            if ($("#drpAllEmp").val() == "" || $("#drpAllEmp").val() <= 0) {
+                showErrorMessage("Please select the Employee.");
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+

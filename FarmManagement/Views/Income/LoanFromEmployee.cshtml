@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Loan Received From Employee";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateEmployeeLoan(0)">
+            Add New Employee Receive Loan
+        </button>
+    </div>
+
+    <div id="grdEmployeeLoan">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterEmployeeLoanRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdEmployeeLoan").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("LoanFromEmployeeAjax", "Income")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                { field: "Name", title: "User" },
+                { field: "LoanId", title: "Loan Id" },
+                { field: "Expense", title: "Account" },
+                { field: "AmountReceive", title: "Amount Receive" },
+                { field: "Date", title: "Date", type: "date", format: "{0:M/d/yyyy}" },
+				{
+				    title: "Action",
+				    sortable: false,
+				    filterable: false,
+				    width: 180,
+				    template: getDeleteButton('deleteEmployeeLoan(#=Id#)')
+				}]
+            });
+        });
+
+        function deleteEmployeeLoan(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Fertilizer Expense ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdEmployeeLoan"), true);
+                $.get('@Url.Action("DeleteEmployeeLoan", "Income")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdEmployeeLoan");
+                });
+            }
+        }
+        function createUpdateEmployeeLoan(id) {
+            kendo.ui.progress($("#grdEmployeeLoan"), true);
+            $.get('@Url.Action("CreateUpdateEmployeeLoan", "Income")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Receive Employee Loan" : "Create Receive Employee Loan");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdEmployeeLoan", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterEmployeeLoanRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdEmployeeLoan').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["LoanId", "AmountReceive", "Expense", "Name", "Date"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdEmployeeLoan"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdEmployeeLoan", searchText);
+            }
+        });
+
+    </script>
+}

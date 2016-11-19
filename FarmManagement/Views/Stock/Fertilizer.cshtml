@@ -1,0 +1,123 @@
+@{
+    ViewBag.Title = "Fertilizer";
+}
+
+<div class="col-md-12">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="createUpdateFertilizer(0)">
+            Add New Fertilizer
+        </button>
+    </div>
+
+    <div id="grdFertilizer">
+    </div>
+</div>
+
+@Html.Partial("ModalPopupPartial")
+
+@section scripts
+{
+    <script type="text/x-kendo-template" id="template">
+        @Html.Partial("SearchRecordsPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txtSearch').typing({
+                    stop: function () { filterFertilizerRecords(); },
+                    delay: 300
+                });
+            }, 3000);
+
+            $("#grdFertilizer").kendoGrid({
+                dataSource: kendoReadDataSource('@Url.Action("FertilizerAjax", "Stock")'),
+                toolbar: kendo.template($("#template").html()),
+                scrollable: false,
+                sortable: true,
+                pageable: addGridPageSizes(),
+                columns: [
+                	{ field: "FarmName", title: "Farm Name" },
+{ field: "Expense", title: "Account" },
+                { field: "Brand", title: "Brand" },
+                { field: "FertilizerName", title: "Name" },
+                { field: "Type", title: "Type" },
+                { field: "Quality", title: "Quality" },
+                { field: "Quantity", title: "Quantity" },
+                { field: "QuantityInNumber", title: "Quantity In Number" },
+				{ field: "VendorName", title: "Vendor Name" },
+                { field: "Price", title: "Price" },
+                { field: "PricePerItem", title: "Price Per" },
+                { field: "TotalLeft", title: "Left Fertilizer" },
+                { field: "DatePurchase", title: "Date Purchase", type: "date", format: "{0:M/d/yyyy}" },
+                { field: "OtherDescription", title: "Other Description" },
+                {
+                    title: "Action",
+                    sortable: false,
+                    filterable: false,
+                    width: 180,
+                    template: function (dataItem) { return fertilizerAction(dataItem) }
+                }]
+            });
+        });
+
+        function fertilizerAction(dataItem) {
+            var action = getEditButton(String.format("createUpdateFertilizer({0})", dataItem.Id));
+            if (!dataItem.IsDelete) {
+                action += getDeleteButton(String.format("deleteFertilizer({0})", dataItem.Id));
+            }
+            return action;
+        }
+
+        function deleteFertilizer(id) {
+            var confirmMessage = confirm("Are you sure to remove selected Fertilizer ?");
+            if (confirmMessage) {
+                kendo.ui.progress($("#grdFertilizer"), true);
+                $.get('@Url.Action("DeleteFertilizer", "Stock")', { id: id }, function (response) {
+                    showMessageRebindGrid(response, "grdFertilizer");
+                });
+            }
+        }
+        function createUpdateFertilizer(id) {
+            kendo.ui.progress($("#grdFertilizer"), true);
+            $.get('@Url.Action("CreateUpdateFertilizer", "Stock")', { id: id }, function (partialView) {
+                $(".modal-body").html(partialView);
+                $(".modal-title").html(id > 0 ? "Update Fertilizer" : "Create New Fertilizer");
+                $('#divModalWindow').modal({ backdrop: 'static', keyboard: false });
+                applyValidations();
+            });
+        }
+        function onSuccessResponse(response) {
+            showMessageHideModalRebindGrid(response, "grdFertilizer", "divModalWindow");
+        }
+        function onFailureResponse(errorMessage) {
+            showErrorMessage(errorMessage);
+            $('.modal-dialog').unblock();
+        }
+
+        function filterFertilizerRecords() {
+            var query = $("#txtSearch").val();
+            var dataSource = $('#grdFertilizer').data().kendoGrid.dataSource;
+
+            if (query.trim().length == 0) {
+                dataSource.filter([]);
+                return;
+            }
+            var fields = ["Brand", "FertilizerName", "Type", "Quality", "Quantity", "QuantityInNumber", "VendorName", "Price", "DatePurchase", "OtherDescription"];
+            var filters = [];
+            $.each(fields, function (i, value) {
+                filters.push({ field: value, operator: "contains", value: query })
+            });
+            dataSource.filter({ logic: "or", filters: filters });
+        }
+
+        $(document).ajaxStop(function () {
+            kendo.ui.progress($("#grdFertilizer"), false);
+            var searchText = $("#txtSearch").val();
+            if (searchText != null) {
+                highlightGridRow("grdFertilizer", searchText);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,729 @@
+@model EmployeeModel
+
+<style type="text/css">
+    @@media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+        }
+    }
+
+    .k-upload-files.k-reset {
+        display: none !important;
+    }
+</style>
+
+@{
+    FarmManagementEntities entities = new FarmManagementEntities();
+}
+
+@using (Ajax.BeginForm("CreateUpdateEmployee", "Salary", new AjaxOptions
+{
+    OnBegin = "blockUI('.modal-dialog');",
+    OnSuccess = "onSuccessResponse",
+    OnFailure = "onFailureResponse",
+    OnComplete = "$('.modal-dialog').unblock();"
+}, new { @class = "form-horizontal" }))
+{
+    <div class="modal-form  form-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Name)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Name)
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.RoleId)
+                    <div class="col-md-7">
+                        <input id="drpRole" name="RoleId" class="form-control-input" value="@Model.RoleId" />
+                        @Html.ValidationMessageFor(x => x.RoleId)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FatherName)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.FatherName)
+                        @Html.ValidationMessageFor(x => x.FatherName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Email)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Email)
+                        @Html.ValidationMessageFor(x => x.Email)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeGender)
+                    <div class="col-md-7">
+                        <input id="drpGender" name="EmployeeGender" class="form-control-input" value="@Model.EmployeeGender" />
+                        @Html.ValidationMessageFor(x => x.EmployeeGender)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeMaritalStatus)
+                    <div class="col-md-7">
+                        <input id="drpMaritalStatus" name="EmployeeMaritalStatus" class="form-control-input" value="@Model.EmployeeMaritalStatus" />
+                        @Html.ValidationMessageFor(x => x.EmployeeMaritalStatus)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.DateOfBirth)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.DateOfBirth, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.DateOfBirth)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PlaceOfBirth)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.PlaceOfBirth)
+                        @Html.ValidationMessageFor(x => x.PlaceOfBirth)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.PermanentAddress)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.PermanentAddress)
+                        @Html.ValidationMessageFor(x => x.PermanentAddress)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.CurrentAddress)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.CurrentAddress)
+                        @Html.ValidationMessageFor(x => x.CurrentAddress)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.DateOfJoining)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.DateOfJoining, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.DateOfJoining)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.GetCustomLabelFor(x => x.ResignationDate)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.ResignationDate, new { @class = "date-picker form-control-input" })
+                        @Html.ValidationMessageFor(x => x.ResignationDate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.CNIC)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.CNIC)
+                        @Html.ValidationMessageFor(x => x.CNIC)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Nationality)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Nationality)
+                        @Html.ValidationMessageFor(x => x.Nationality)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Department)
+                    <div class="col-md-7">
+                        @*@Html.TextBoxFor(x => x.Department, new { required = "required" })*@
+
+                        @{
+                            List<SelectListItem> listItems = new List<SelectListItem>();
+
+                            foreach (var item in entities.Departments.ToList())
+                            {
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = item.Name,
+                                    Value = item.Id.ToString()
+                                });
+                            }
+                        }
+
+                        @Html.DropDownListFor(model => model.Department , listItems, new { @class="form-control-input"})
+                        @Html.ValidationMessageFor(x => x.Department)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.FarmId)
+                    <div class="col-md-7">
+                        <input id="drpFarm" name="FarmId" class="form-control-input" required value="@Model.FarmId" />
+                        @Html.ValidationMessageFor(x => x.FarmId)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.ContactNo)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.ContactNo)
+                        @Html.ValidationMessageFor(x => x.ContactNo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Landline)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Landline)
+                        @Html.ValidationMessageFor(x => x.Landline)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.EmployeeStatus)
+                    <div class="col-md-7">
+                        <input id="drpEmpStatus" name="EmployeeStatus" class="form-control-input" required value="@Model.EmployeeStatus" />
+                        @Html.ValidationMessageFor(x => x.EmployeeStatus)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.TemporaryEmployee)
+                    <div class="col-md-7">
+                        <input id="drpIsTemporaryEmployee" name="TemporaryEmployee" class="form-control-input" value="@Model.TemporaryEmployee" />
+                        @Html.ValidationMessageFor(x => x.TemporaryEmployee)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.IsUser)
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(x => x.IsUser)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Salary)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Salary)
+                        @Html.ValidationMessageFor(x => x.Salary)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divUser" class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.UserName)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.UserName, new { required = "required" })
+                        @Html.ValidationMessageFor(x => x.UserName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CustomLabelFor(x => x.Password)
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(x => x.Password, new { required = "required" })
+                        @Html.ValidationMessageFor(x => x.Password)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.Position)
+
+                @*@Html.TextBoxFor(x => x.Position)*@
+                <div class="col-md-7">
+                    @{
+                        List<SelectListItem> listItems2 = new List<SelectListItem>();
+
+                        foreach (var item in entities.Positions.ToList())
+                        {
+                            listItems2.Add(new SelectListItem
+                            {
+                                Text = item.Name,
+                                Value = item.Id.ToString()
+                            });
+                        }
+                    }
+
+                    @Html.DropDownListFor(model => model.Position, listItems2, new {@class = "form-control-input"})
+                    @Html.ValidationMessageFor(x => x.Position)
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.Company)
+                <div class="col-md-7">
+                    @Html.TextBoxFor(x => x.Company)
+                    @Html.ValidationMessageFor(x => x.Company)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.CompanyPhoneNumber)
+                <div class="col-md-7">
+                    @Html.TextBoxFor(x => x.CompanyPhoneNumber)
+                    @Html.ValidationMessageFor(x => x.CompanyPhoneNumber)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.Type)
+                <div class="col-md-7">
+                    @Html.TextBoxFor(x => x.Type)
+                    @Html.ValidationMessageFor(x => x.Type)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.Security)
+                <div class="col-md-7">
+                    @Html.TextBoxFor(x => x.Security)
+                    @Html.ValidationMessageFor(x => x.Security)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.VendorName)
+                <div class="col-md-7">
+                    @Html.TextBoxFor(x => x.VendorName)
+                    @Html.ValidationMessageFor(x => x.VendorName)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.CustomLabelFor(x => x.AccountId)
+                <div class="col-md-7">
+                    <input id="drpAccount" name="AccountId" class="form-control-input" value="@Model.AccountId"/>
+                    @Html.ValidationMessageFor(x => x.AccountId)
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.CustomLabelFor(x => x.AccountId)
+                <div class="col-md-7">
+                    @{
+                        List<SelectListItem> accountIds = new List<SelectListItem>();
+
+                        foreach (var item in entities.PersonalAccounts.Where(pa => pa.UserId == Model.Id).ToList())
+                        {
+                            accountIds.Add(new SelectListItem
+                            {
+                                Text = String.Format("Balance: {0}, date: {1}", item.OpeningBalance, item.CreatedDate),
+                                Value = item.Id.ToString()
+                            });
+                        }
+                    }
+
+                    @Html.DropDownListFor(model => model.AccountId, accountIds, "Select", new {@class = "form-control-input"})
+                    @Html.ValidationMessageFor(x => x.AccountId)
+                </div>
+            </div>*@
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+
+    <div class="form-group divUploadEmployeePicture">
+            @Html.GetCustomLabelFor(x => x.Picture, new { @class = "col-lg-2" })
+            <div class="col-md-10">
+                <input name="file" id="Picture" type="file" accept="image/*" />
+                @Html.ValidationMessageFor(x => x.Picture)
+            </div>
+        </div>
+
+        <div class="table-responsive" id="divEmployeePicture">
+        </div>
+
+        <div class="divPermanentEmployee" style="display:none">
+            <div class="form-group divUploadScannedDocument">
+                @Html.GetCustomLabelFor(x => x.ScannedDocument, new { @class = "col-lg-2" })
+                <div class="col-md-10">
+                    <input name="file" id="ScannedDocument" type="file" accept="image/*" />
+                    @Html.ValidationMessageFor(x => x.ScannedDocument)
+                </div>
+            </div>
+
+            <div class="table-responsive" id="divScannedDocument">
+            </div>
+        </div>
+
+        <div class="divTemporaryEmployee" style="display:none">
+            <div class="form-group divUploadCNICFrontDocument">
+                @Html.GetCustomLabelFor(x => x.CNICFrontDocument, new { @class = "col-lg-2" })
+                <div class="col-md-10">
+                    <input name="file" id="CNICFrontDocument" type="file" accept="image/*" />
+                    @Html.ValidationMessageFor(x => x.CNICFrontDocument)
+                </div>
+            </div>
+
+            <div class="table-responsive" id="divCNICFrontDocument">
+            </div>
+
+            <div class="form-group divUploadCNICBackDocument">
+                @Html.GetCustomLabelFor(x => x.CNICBackDocument, new { @class = "col-lg-2" })
+                <div class="col-md-10">
+                    <input name="file" id="CNICBackDocument" type="file" accept="image/*" />
+                    @Html.ValidationMessageFor(x => x.CNICBackDocument)
+                </div>
+            </div>
+
+            <div class="table-responsive" id="divCNICBackDocument">
+            </div>
+
+            <div class="form-group divUploadAgreementDocument">
+                @Html.GetCustomLabelFor(x => x.AgreementDocument, new { @class = "col-lg-2" })
+                <div class="col-md-10">
+                    <input name="file" id="AgreementDocument" type="file" accept="image/*" />
+                    @Html.ValidationMessageFor(x => x.AgreementDocument)
+                </div>
+            </div>
+
+            <div class="table-responsive" id="divAgreementDocument">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button id="btnEmployee" type="submit" class="btn btn-primary">
+                @(Model.Id > 0 ? "Update" : "Create")
+            </button>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.EmployeeGuid)
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+        deleteAllFiles();
+
+        $(".modal-dialog input[type='text']").not(".date-picker").addClass("form-control");
+        $(".modal-dialog label").addClass("col-md-5");
+
+        $(".date-picker").kendoDatePicker();
+
+        bindFarm("drpFarm");
+        bindRoles("drpRole");
+        bindAnimalGender("drpGender");
+        bindMaritalStatus("drpMaritalStatus");
+        bindStatus("drpEmpStatus");
+        bindEmployeeType("drpIsTemporaryEmployee");
+        bindEmployeePersonalAccounts("drpAccount", '@Model.Id');
+
+        getEmployeePicture('@FileUploadPath.EmployeePicture');
+
+        isShowUserInfo();
+
+        @if (Model.Id > 0) {
+           <text> rebindUpload(); </text>
+        }
+
+        $("#drpIsTemporaryEmployee").change(function () {
+            rebindUpload();
+        });
+
+        $("#IsUser").change(function () {
+            isShowUserInfo();
+        });
+
+        $("#Picture").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.EmployeePicture.ToString()' + '&guid=' + $("#EmployeeGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getEmployeePicture('@FileUploadPath.EmployeePicture');
+            }
+        });
+
+        $("#ScannedDocument").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.EmployeeScannedDocument.ToString()' + '&guid=' + $("#EmployeeGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getScannedDocument('@FileUploadPath.EmployeeScannedDocument');
+            }
+        });
+
+        $("#CNICFrontDocument").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.EmployeeCNICFrontDocument.ToString()' + '&guid=' + $("#EmployeeGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getCNICFrontDocument('@FileUploadPath.EmployeeCNICFrontDocument');
+            }
+        });
+        $("#CNICBackDocument").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.EmployeeCNICBackDocument.ToString()' + '&guid=' + $("#EmployeeGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getCNICBackDocument('@FileUploadPath.EmployeeCNICBackDocument');
+            }
+        });
+        $("#AgreementDocument").kendoUpload({
+            async: {
+                saveUrl: '@Url.Action("AddFileUpload", "FileUpload")?fileUploadPath=' + '@FileUploadPath.EmployeeAgreementDocument.ToString()' + '&guid=' + $("#EmployeeGuid").val(),
+                removeUrl: "@Url.Action("AddFileUpload", "FileUpload")",
+                autoUpload: true,
+                allowmultiple: false
+            },
+            complete: function (e) {
+                getAgreementDocument('@FileUploadPath.EmployeeAgreementDocument');
+            }
+        });
+
+        $("#btnEmployee").click(function (event) {
+            if (!$("form").valid()) {
+                return;
+            }
+
+            if ($("#drpIsTemporaryEmployee").val() == "" || $("#drpIsTemporaryEmployee").val() <= 0) {
+                showErrorMessage("Please select the Employee Type (Permanent/Temporary).");
+                event.preventDefault();
+                return false;
+            }
+            if ($("#drpRole").val() == "" || $("#drpRole").val() <= 0) {
+                showErrorMessage("Please select the role.");
+                event.preventDefault();
+                return false;
+            }
+            if ($("#drpGender").val() == "" || $("#drpGender").val() <= 0) {
+                showErrorMessage("Please select the gender.");
+                event.preventDefault();
+                return false;
+            }
+            if ($("#drpMaritalStatus").val() == "" || $("#drpMaritalStatus").val() <= 0) {
+                showErrorMessage("Please select the marital status.");
+                event.preventDefault();
+                return false;
+            }
+
+            if ($("#divEmployeePicture tr").length < 2) {
+                debugger;
+                showErrorMessage("Please upload the Employee picture.");
+                event.preventDefault();
+            }
+        });
+    });
+
+    function downloadFile(id) {
+        location.href = '@Url.Action("DownloadFile", "FileUpload")?Id=' + id;
+    }
+    function deleteFile(id) {
+        var shouldDelete = confirm("Are you sure, you want to remove selected File?");
+        if (!shouldDelete) return;
+
+        $.get("@Url.Action("DeleteFile", "FileUpload")", { Id: id }, function () {
+            var isTemporaryEmployee = $("drpIsTemporaryEmployee").val() == '@EmployeeType.Temporary';
+            if (isTemporaryEmployee) {
+                getCNICFrontDocument('@FileUploadPath.EmployeeCNICFrontDocument');
+                getCNICBackDocument('@FileUploadPath.EmployeeCNICBackDocument');
+                getAgreementDocument('@FileUploadPath.EmployeeAgreementDocument');
+            }
+            else {
+                getScannedDocument('@FileUploadPath.EmployeeScannedDocument');
+            }
+
+            getEmployeePicture('@FileUploadPath.EmployeePicture');
+        }, 'json');
+    }
+
+    function getScannedDocument(fileUploadPath) {
+        $.get('@Url.Action("GetFiles", "FileUpload")', { fileUploadPath: fileUploadPath }, function (html) {
+            $("#divScannedDocument").html(html);
+
+            if ($("#divScannedDocument tr").length > 1) {
+                $(".divUploadScannedDocument .k-upload").hide();
+                $("#divScannedDocument").show();
+            }
+            else {
+                $(".divUploadScannedDocument .k-upload").show();
+                $("#divScannedDocument").hide();
+            }
+        });
+    }
+    function getCNICFrontDocument(fileUploadPath) {
+        $.get('@Url.Action("GetFiles", "FileUpload")', { fileUploadPath: fileUploadPath }, function (html) {
+            $("#divCNICFrontDocument").html(html);
+
+            if ($("#divCNICFrontDocument tr").length > 1) {
+                $(".divUploadCNICFrontDocument .k-upload").hide();
+                $("#divCNICFrontDocument").show();
+            }
+            else {
+                $(".divUploadFrontDocument .k-upload").show();
+                $("#divCNICFrontDocument").hide();
+            }
+        });
+    }
+    function getCNICBackDocument(fileUploadPath) {
+        $.get('@Url.Action("GetFiles", "FileUpload")', { fileUploadPath: fileUploadPath }, function (html) {
+            $("#divCNICBackDocument").html(html);
+
+            if ($("#divCNICBackDocument tr").length > 1) {
+                $(".divUploadCNICBackDocument .k-upload").hide();
+                $("#divCNICBackDocument").show();
+            }
+            else {
+                $(".divUploadCNICBackDocument .k-upload").show();
+                $("#divCNICBackDocument").hide();
+            }
+        });
+    }
+    function getAgreementDocument(fileUploadPath) {
+        $.get('@Url.Action("GetFiles", "FileUpload")', { fileUploadPath: fileUploadPath }, function (html) {
+            $("#divAgreementDocument").html(html);
+
+            if ($("#divAgreementDocument tr").length > 1) {
+                $(".divUploadAgreementDocument .k-upload").hide();
+                $("#divAgreementDocument").show();
+            }
+            else {
+                $(".divUploadAgreementDocument .k-upload").show();
+                $("#divAgreementDocument").hide();
+            }
+        });
+    }
+    function getEmployeePicture(fileUploadPath) {
+        $.get('@Url.Action("GetFiles", "FileUpload")', { fileUploadPath: fileUploadPath }, function (html) {
+            $("#divEmployeePicture").html(html);
+            debugger;
+            if ($("#divEmployeePicture tr").length > 1) {
+                $(".divUploadEmployeePicture .k-upload").hide();
+                $("#divEmployeePicture").show();
+            }
+            else {
+                $(".divUploadEmployeePicture .k-upload").show();
+                $("#divEmployeePicture").hide();
+            }
+        });
+    }
+
+    function isShowUserInfo() {
+        var isUserCheck = $("#IsUser").is(":checked") == true;
+        $("#divUser").hide();
+
+        if (isUserCheck) {
+            $("#divUser").show();
+        }
+    }
+
+    function rebindUpload() {
+        $(".divTemporaryEmployee").hide();
+        $(".divPermanentEmployee").hide();
+
+        if ($("#drpIsTemporaryEmployee").val() == '@((int)EmployeeType.Temporary)') {
+            $(".divTemporaryEmployee").show();
+            getCNICFrontDocument('@FileUploadPath.EmployeeCNICFrontDocument');
+            getCNICBackDocument('@FileUploadPath.EmployeeCNICBackDocument');
+            getAgreementDocument('@FileUploadPath.EmployeeAgreementDocument');
+        }
+        else if ($("#drpIsTemporaryEmployee").val() == '@((int)EmployeeType.Permanent)') {
+            $(".divPermanentEmployee").show();
+            getScannedDocument('@FileUploadPath.EmployeeScannedDocument');
+        }
+    }
+
+</script>
