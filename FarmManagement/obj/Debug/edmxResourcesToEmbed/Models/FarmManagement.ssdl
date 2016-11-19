@@ -1,0 +1,1917 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FarmManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Animal">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AnimalName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="Age" Type="int" Nullable="false" />
+    <Property Name="Color" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="Photo" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="FamilyName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Sex" Type="varchar" MaxLength="50" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttendanceManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttendanceManagementDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AttendanceManagementId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="IsPresentMorning" Type="bit" />
+    <Property Name="IsAbsentMorning" Type="bit" />
+    <Property Name="IsLeaveMorning" Type="bit" />
+    <Property Name="IsPresentNight" Type="bit" />
+    <Property Name="IsAbsentNight" Type="bit" />
+    <Property Name="IsLeaveNight" Type="bit" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AreaId" Type="int" Nullable="false" />
+    <Property Name="CropName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CropDuration" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CropStartDate" Type="datetime" Nullable="false" />
+    <Property Name="CropEndDate" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="300" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Farm">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="Address" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="TotalArea" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ActualPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TaxAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TotalValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaperValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Rent" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Owner" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="PurchasedDate" Type="datetime" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="TotalMonths" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="FarmArea">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AreaName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="AreaInAcars" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="StartingPoint" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="EndingPoint" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="RemaningArea" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Fertilizer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="Brand" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="FertilizerName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quality" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="QuantityInNumber" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PricePerItem" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="DatePurchase" Type="datetime" Nullable="false" />
+    <Property Name="PaymentBill" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FertilizerExpense">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AreaId" Type="int" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="FertilizerId" Type="int" Nullable="false" />
+    <Property Name="QuantityInNumber" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Form">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ControllerName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ActionName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FormSetting">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FormId" Type="int" Nullable="false" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="IsAdd" Type="bit" Nullable="false" />
+    <Property Name="IsUpdate" Type="bit" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Fuel">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="FuelName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DatePurchase" Type="datetime" Nullable="false" />
+    <Property Name="QuantityInLiter" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PricePerLiter" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaymentBill" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FuelExpense">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AreaId" Type="int" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="FuelId" Type="int" Nullable="false" />
+    <Property Name="PersonName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LoanManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="LoanAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="NoOfInstallment" Type="int" Nullable="false" />
+    <Property Name="PerMonthOrYear" Type="bit" Nullable="false" />
+    <Property Name="LoanStartDate" Type="datetime" Nullable="false" />
+    <Property Name="LoanEndDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="IntersetRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="DebtSalary" Type="bit" />
+    <Property Name="DeductedSalary" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="LoanReceivableFromBank">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoanId" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="NoOfInstallment" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="InterestRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TotalAmountTobePaid" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="LoanReceiveDate" Type="datetime" Nullable="false" />
+    <Property Name="LoanEndDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="LoanReceivableFromEmployee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoanId" Type="int" Nullable="false" />
+    <Property Name="AmountReceive" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Machinery">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Color" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="RegistrationNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ModelNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="Condition" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="Picture" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="LicenseFile" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OtherExpense">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="OtherItemId" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OtherItem">
+    <Key>
+      <PropertyRef Name="ItemId" />
+    </Key>
+    <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="TitleExpense" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="DatePurchase" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaidLoan">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoanId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PermanentEmployeeSalary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="IsAllowFund" Type="bit" Nullable="false" />
+    <Property Name="BasicSalary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Bonus" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="MedicalAllowance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TA_DA" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="HouseRent" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="UtilityAllowance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ProvidentFund" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Penality" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PersonalAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="OpeningBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ClosingDate" Type="datetime" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Position">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="DepartmentId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReturnLoan">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoanId" Type="int" Nullable="false" />
+    <Property Name="InstallmentAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="PaidDate" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Seed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="Quality" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="QuantityInNumber" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="TotalPricePer" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PricePerItem" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="DatePurchase" Type="datetime" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="PaymentBill" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SeedExpense">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="AreaId" Type="int" Nullable="false" />
+    <Property Name="SeedId" Type="int" Nullable="false" />
+    <Property Name="QuantityInNumber" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TaskAssignment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskName" Type="varchar(max)" Nullable="false" />
+    <Property Name="StaffNameId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="DeadlineStartDate" Type="datetime" Nullable="false" />
+    <Property Name="DeadlineEndDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="Remarks" Type="varchar" MaxLength="50" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="TemporaryEmployeeSalary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+    <Property Name="MorningWages" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="NightWages" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="TransectionAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PayByUserId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TransectionPersonalAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Credit" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Debit" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="IsAddedByAdmin" Type="bit" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="200" />
+    <Property Name="Password" Type="varchar(max)" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="FatherName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CNIC" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="MaritalStatus" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+    <Property Name="PlaceOfBirth" Type="varchar" MaxLength="200" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Landline" Type="varchar" MaxLength="200" />
+    <Property Name="Nationality" Type="varchar" MaxLength="200" />
+    <Property Name="Email" Type="varchar" MaxLength="200" />
+    <Property Name="PermanentAddress" Type="varchar(max)" Nullable="false" />
+    <Property Name="CurrentAddress" Type="varchar(max)" />
+    <Property Name="DateOfJoining" Type="datetime" Nullable="false" />
+    <Property Name="ResignationDate" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="Picture" Type="varchar(max)" Nullable="false" />
+    <Property Name="Position" Type="varchar" MaxLength="200" />
+    <Property Name="IsTemporaryEmployee" Type="bit" Nullable="false" />
+    <Property Name="ScannedDocument" Type="varchar(max)" />
+    <Property Name="CNICFrontSide" Type="varchar(max)" />
+    <Property Name="CNICBackSide" Type="varchar(max)" />
+    <Property Name="AgreementDocument" Type="varchar(max)" />
+    <Property Name="IsUser" Type="bit" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="Department" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Salary" Type="varchar" MaxLength="200" />
+    <Property Name="Company" Type="varchar(max)" />
+    <Property Name="CompanyPhoneNumber" Type="varchar" MaxLength="200" />
+    <Property Name="Type" Type="varchar" MaxLength="50" />
+    <Property Name="Security" Type="varchar" MaxLength="50" />
+    <Property Name="VendorName" Type="varchar" MaxLength="200" />
+    <Property Name="AccountId" Type="int" />
+    <Property Name="RelationType" Type="int" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FarmId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Color" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Power" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="RegistrationNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Picture" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="LicenseFile" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ModelNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="Condition" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VendorManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="PhoneNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="PersonalPhoneNo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="AddressInfo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="OpeningBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="OtherDescription" Type="varchar" MaxLength="500" />
+    <Property Name="Type" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="InsertDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_Account_Animal">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Animal">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_BankLoan">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="LoanReceivableFromBank" Type="Self.LoanReceivableFromBank" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromBank">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_EmployeeLoan">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="LoanReceivableFromEmployee" Type="Self.LoanReceivableFromEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromEmployee">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Fertilizer">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Fertilizer" Type="Self.Fertilizer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fertilizer">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_FertilizerExpense">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Fuel">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Fuel" Type="Self.Fuel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fuel">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_FuelExpense">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Machinery">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Machinery" Type="Self.Machinery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machinery">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_OtherExpense">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="OtherExpense" Type="Self.OtherExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherExpense">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_OtherItem">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="OtherItem" Type="Self.OtherItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherItem">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_PaidLoan">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="PaidLoan" Type="Self.PaidLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PaidLoan">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_ReturnLoan">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="ReturnLoan" Type="Self.ReturnLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLoan">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Seed">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Seed" Type="Self.Seed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Seed">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_SeedExpense">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="SeedExpense" Type="Self.SeedExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeedExpense">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_User">
+    <End Role="PersonalAccount" Type="Self.PersonalAccount" Multiplicity="0..1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PersonalAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Vehicle">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Animal_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Animal">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AttendanceMgmt_AttendanceMgmtDetail">
+    <End Role="AttendanceManagement" Type="Self.AttendanceManagement" Multiplicity="1" />
+    <End Role="AttendanceManagementDetail" Type="Self.AttendanceManagementDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AttendanceManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AttendanceManagementDetail">
+        <PropertyRef Name="AttendanceManagementId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AttendanceMgmtDetail_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="AttendanceManagementDetail" Type="Self.AttendanceManagementDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AttendanceManagementDetail">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropManagement_FertilizerExpense">
+    <End Role="CropManagement" Type="Self.CropManagement" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropManagement_FuelExpense">
+    <End Role="CropManagement" Type="Self.CropManagement" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropManagement_SeedExpense">
+    <End Role="CropManagement" Type="Self.CropManagement" Multiplicity="1" />
+    <End Role="Seed" Type="Self.Seed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Seed">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Animal">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Animal">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_CropManagement">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="CropManagement" Type="Self.CropManagement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CropManagement">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_FarmArea">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="FarmArea" Type="Self.FarmArea" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FarmArea">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Fertilizer">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Fertilizer" Type="Self.Fertilizer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fertilizer">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_FertilizerExpense">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Fuel">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Fuel" Type="Self.Fuel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fuel">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_FuelExpense">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Machinery">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Machinery" Type="Self.Machinery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machinery">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_OtherExpense">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="OtherExpense" Type="Self.OtherExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherExpense">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_OtherItem">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="OtherItem" Type="Self.OtherItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherItem">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Seed">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Seed" Type="Self.Seed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Seed">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_SeedExpense">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="SeedExpense" Type="Self.SeedExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeedExpense">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_User">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Farm_Vehicle">
+    <End Role="Farm" Type="Self.Farm" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Farm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="FarmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FarmArea_CropManagement">
+    <End Role="FarmArea" Type="Self.FarmArea" Multiplicity="1" />
+    <End Role="CropManagement" Type="Self.CropManagement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FarmArea">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CropManagement">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FarmArea_FertilizerExpense">
+    <End Role="FarmArea" Type="Self.FarmArea" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FarmArea">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FarmArea_FuelExpense">
+    <End Role="FarmArea" Type="Self.FarmArea" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FarmArea">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FarmArea_SeedExpense">
+    <End Role="FarmArea" Type="Self.FarmArea" Multiplicity="1" />
+    <End Role="SeedExpense" Type="Self.SeedExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FarmArea">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeedExpense">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fertilizer_FertilizerExpense">
+    <End Role="Fertilizer" Type="Self.Fertilizer" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fertilizer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="FertilizerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fertilizer_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Fertilizer" Type="Self.Fertilizer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fertilizer">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FertilizerExpense_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="FertilizerExpense" Type="Self.FertilizerExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FertilizerExpense">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Form_FromSetting">
+    <End Role="Form" Type="Self.Form" Multiplicity="1" />
+    <End Role="FormSetting" Type="Self.FormSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Form">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FormSetting">
+        <PropertyRef Name="FormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_From_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="FormSetting" Type="Self.FormSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FormSetting">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fuel_FuelExpense">
+    <End Role="Fuel" Type="Self.Fuel" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fuel">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="FuelId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fuel_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Fuel" Type="Self.Fuel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fuel">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FuelExpense_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="FuelExpense" Type="Self.FuelExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FuelExpense">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoanManagement_BankLoan">
+    <End Role="LoanManagement" Type="Self.LoanManagement" Multiplicity="1" />
+    <End Role="LoanReceivableFromBank" Type="Self.LoanReceivableFromBank" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoanManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromBank">
+        <PropertyRef Name="LoanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoanManagement_EmployeeLoan">
+    <End Role="LoanManagement" Type="Self.LoanManagement" Multiplicity="1" />
+    <End Role="LoanReceivableFromEmployee" Type="Self.LoanReceivableFromEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoanManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromEmployee">
+        <PropertyRef Name="LoanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoanManagement_PaidLoan">
+    <End Role="LoanManagement" Type="Self.LoanManagement" Multiplicity="1" />
+    <End Role="PaidLoan" Type="Self.PaidLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoanManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PaidLoan">
+        <PropertyRef Name="LoanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoanManagement_ReturnLoan">
+    <End Role="LoanManagement" Type="Self.LoanManagement" Multiplicity="1" />
+    <End Role="ReturnLoan" Type="Self.ReturnLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoanManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLoan">
+        <PropertyRef Name="LoanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoanManagement_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="LoanManagement" Type="Self.LoanManagement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanManagement">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Machinery_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Machinery" Type="Self.Machinery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machinery">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OtherExpense_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="OtherExpense" Type="Self.OtherExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherExpense">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OtherItem_OtherItemExpense">
+    <End Role="OtherItem" Type="Self.OtherItem" Multiplicity="1" />
+    <End Role="OtherExpense" Type="Self.OtherExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OtherItem">
+        <PropertyRef Name="ItemId" />
+      </Principal>
+      <Dependent Role="OtherExpense">
+        <PropertyRef Name="OtherItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OtherItem_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="OtherItem" Type="Self.OtherItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OtherItem">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PaidLoan_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PaidLoan" Type="Self.PaidLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PaidLoan">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PermanentEmployeeSalary_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PermanentEmployeeSalary" Type="Self.PermanentEmployeeSalary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PermanentEmployeeSalary">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersonalAccount_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PersonalAccount" Type="Self.PersonalAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PersonalAccount">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Role_User">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Seed_SeedExpense">
+    <End Role="Seed" Type="Self.Seed" Multiplicity="1" />
+    <End Role="SeedExpense" Type="Self.SeedExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seed">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeedExpense">
+        <PropertyRef Name="SeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Seed_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Seed" Type="Self.Seed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Seed">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SeedExpense_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="SeedExpense" Type="Self.SeedExpense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeedExpense">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TransectionAccount_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="TransectionAccount" Type="Self.TransectionAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TransectionAccount">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TransectionAccount_User_PayBy">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="TransectionAccount" Type="Self.TransectionAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TransectionAccount">
+        <PropertyRef Name="PayByUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TransectionPersonalAccount_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="TransectionPersonalAccount" Type="Self.TransectionPersonalAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TransectionPersonalAccount">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_BankLoan">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="LoanReceivableFromBank" Type="Self.LoanReceivableFromBank" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromBank">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_EmployeeLoan">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="LoanReceivableFromEmployee" Type="Self.LoanReceivableFromEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LoanReceivableFromEmployee">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_ReturnLoan">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="ReturnLoan" Type="Self.ReturnLoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLoan">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_TaskAssignment">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TaskAssignment">
+        <PropertyRef Name="StaffNameId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vehicle_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Animal">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Animal">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Fertilizer">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Fertilizer" Type="Self.Fertilizer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fertilizer">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Fuel">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Fuel" Type="Self.Fuel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fuel">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Machinery">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Machinery" Type="Self.Machinery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machinery">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Seed">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Seed" Type="Self.Seed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Seed">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendor_Vehicle">
+    <End Role="VendorManagement" Type="Self.VendorManagement" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VendorManagement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Position_fk">
+    <End Role="Department" Type="Self.Department" Multiplicity="1" />
+    <End Role="Position" Type="Self.Position" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Position">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="FarmManagementModelStoreContainer">
+    <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Animal" EntityType="Self.Animal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttendanceManagement" EntityType="Self.AttendanceManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttendanceManagementDetail" EntityType="Self.AttendanceManagementDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropManagement" EntityType="Self.CropManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Farm" EntityType="Self.Farm" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FarmArea" EntityType="Self.FarmArea" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Fertilizer" EntityType="Self.Fertilizer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FertilizerExpense" EntityType="Self.FertilizerExpense" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Form" EntityType="Self.Form" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FormSetting" EntityType="Self.FormSetting" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Fuel" EntityType="Self.Fuel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FuelExpense" EntityType="Self.FuelExpense" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoanManagement" EntityType="Self.LoanManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoanReceivableFromBank" EntityType="Self.LoanReceivableFromBank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoanReceivableFromEmployee" EntityType="Self.LoanReceivableFromEmployee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Machinery" EntityType="Self.Machinery" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OtherExpense" EntityType="Self.OtherExpense" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OtherItem" EntityType="Self.OtherItem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaidLoan" EntityType="Self.PaidLoan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PermanentEmployeeSalary" EntityType="Self.PermanentEmployeeSalary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PersonalAccount" EntityType="Self.PersonalAccount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReturnLoan" EntityType="Self.ReturnLoan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Seed" EntityType="Self.Seed" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SeedExpense" EntityType="Self.SeedExpense" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaskAssignment" EntityType="Self.TaskAssignment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TemporaryEmployeeSalary" EntityType="Self.TemporaryEmployeeSalary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransectionAccount" EntityType="Self.TransectionAccount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransectionPersonalAccount" EntityType="Self.TransectionPersonalAccount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorManagement" EntityType="Self.VendorManagement" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Account_Animal" Association="Self.FK_Account_Animal">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Animal" EntitySet="Animal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_BankLoan" Association="Self.FK_Account_BankLoan">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="LoanReceivableFromBank" EntitySet="LoanReceivableFromBank" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_EmployeeLoan" Association="Self.FK_Account_EmployeeLoan">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="LoanReceivableFromEmployee" EntitySet="LoanReceivableFromEmployee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Fertilizer" Association="Self.FK_Account_Fertilizer">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Fertilizer" EntitySet="Fertilizer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_FertilizerExpense" Association="Self.FK_Account_FertilizerExpense">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Fuel" Association="Self.FK_Account_Fuel">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Fuel" EntitySet="Fuel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_FuelExpense" Association="Self.FK_Account_FuelExpense">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Machinery" Association="Self.FK_Account_Machinery">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Machinery" EntitySet="Machinery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_OtherExpense" Association="Self.FK_Account_OtherExpense">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="OtherExpense" EntitySet="OtherExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_OtherItem" Association="Self.FK_Account_OtherItem">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="OtherItem" EntitySet="OtherItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_PaidLoan" Association="Self.FK_Account_PaidLoan">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="PaidLoan" EntitySet="PaidLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_ReturnLoan" Association="Self.FK_Account_ReturnLoan">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="ReturnLoan" EntitySet="ReturnLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Seed" Association="Self.FK_Account_Seed">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Seed" EntitySet="Seed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_SeedExpense" Association="Self.FK_Account_SeedExpense">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="SeedExpense" EntitySet="SeedExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_User" Association="Self.FK_Account_User">
+      <End Role="PersonalAccount" EntitySet="PersonalAccount" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Vehicle" Association="Self.FK_Account_Vehicle">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Animal_UserId" Association="Self.FK_Animal_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Animal" EntitySet="Animal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AttendanceMgmt_AttendanceMgmtDetail" Association="Self.FK_AttendanceMgmt_AttendanceMgmtDetail">
+      <End Role="AttendanceManagement" EntitySet="AttendanceManagement" />
+      <End Role="AttendanceManagementDetail" EntitySet="AttendanceManagementDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AttendanceMgmtDetail_UserId" Association="Self.FK_AttendanceMgmtDetail_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="AttendanceManagementDetail" EntitySet="AttendanceManagementDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropManagement_FertilizerExpense" Association="Self.FK_CropManagement_FertilizerExpense">
+      <End Role="CropManagement" EntitySet="CropManagement" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropManagement_FuelExpense" Association="Self.FK_CropManagement_FuelExpense">
+      <End Role="CropManagement" EntitySet="CropManagement" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropManagement_SeedExpense" Association="Self.FK_CropManagement_SeedExpense">
+      <End Role="CropManagement" EntitySet="CropManagement" />
+      <End Role="Seed" EntitySet="Seed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Animal" Association="Self.FK_Farm_Animal">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Animal" EntitySet="Animal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_CropManagement" Association="Self.FK_Farm_CropManagement">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="CropManagement" EntitySet="CropManagement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_FarmArea" Association="Self.FK_Farm_FarmArea">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="FarmArea" EntitySet="FarmArea" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Fertilizer" Association="Self.FK_Farm_Fertilizer">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Fertilizer" EntitySet="Fertilizer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_FertilizerExpense" Association="Self.FK_Farm_FertilizerExpense">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Fuel" Association="Self.FK_Farm_Fuel">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Fuel" EntitySet="Fuel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_FuelExpense" Association="Self.FK_Farm_FuelExpense">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Machinery" Association="Self.FK_Farm_Machinery">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Machinery" EntitySet="Machinery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_OtherExpense" Association="Self.FK_Farm_OtherExpense">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="OtherExpense" EntitySet="OtherExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_OtherItem" Association="Self.FK_Farm_OtherItem">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="OtherItem" EntitySet="OtherItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Seed" Association="Self.FK_Farm_Seed">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Seed" EntitySet="Seed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_SeedExpense" Association="Self.FK_Farm_SeedExpense">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="SeedExpense" EntitySet="SeedExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_User" Association="Self.FK_Farm_User">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Farm_Vehicle" Association="Self.FK_Farm_Vehicle">
+      <End Role="Farm" EntitySet="Farm" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FarmArea_CropManagement" Association="Self.FK_FarmArea_CropManagement">
+      <End Role="FarmArea" EntitySet="FarmArea" />
+      <End Role="CropManagement" EntitySet="CropManagement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FarmArea_FertilizerExpense" Association="Self.FK_FarmArea_FertilizerExpense">
+      <End Role="FarmArea" EntitySet="FarmArea" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FarmArea_FuelExpense" Association="Self.FK_FarmArea_FuelExpense">
+      <End Role="FarmArea" EntitySet="FarmArea" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FarmArea_SeedExpense" Association="Self.FK_FarmArea_SeedExpense">
+      <End Role="FarmArea" EntitySet="FarmArea" />
+      <End Role="SeedExpense" EntitySet="SeedExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fertilizer_FertilizerExpense" Association="Self.FK_Fertilizer_FertilizerExpense">
+      <End Role="Fertilizer" EntitySet="Fertilizer" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fertilizer_UserId" Association="Self.FK_Fertilizer_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Fertilizer" EntitySet="Fertilizer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FertilizerExpense_UserId" Association="Self.FK_FertilizerExpense_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="FertilizerExpense" EntitySet="FertilizerExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Form_FromSetting" Association="Self.FK_Form_FromSetting">
+      <End Role="Form" EntitySet="Form" />
+      <End Role="FormSetting" EntitySet="FormSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_From_Role" Association="Self.FK_From_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="FormSetting" EntitySet="FormSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fuel_FuelExpense" Association="Self.FK_Fuel_FuelExpense">
+      <End Role="Fuel" EntitySet="Fuel" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fuel_UserId" Association="Self.FK_Fuel_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Fuel" EntitySet="Fuel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FuelExpense_UserId" Association="Self.FK_FuelExpense_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="FuelExpense" EntitySet="FuelExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoanManagement_BankLoan" Association="Self.FK_LoanManagement_BankLoan">
+      <End Role="LoanManagement" EntitySet="LoanManagement" />
+      <End Role="LoanReceivableFromBank" EntitySet="LoanReceivableFromBank" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoanManagement_EmployeeLoan" Association="Self.FK_LoanManagement_EmployeeLoan">
+      <End Role="LoanManagement" EntitySet="LoanManagement" />
+      <End Role="LoanReceivableFromEmployee" EntitySet="LoanReceivableFromEmployee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoanManagement_PaidLoan" Association="Self.FK_LoanManagement_PaidLoan">
+      <End Role="LoanManagement" EntitySet="LoanManagement" />
+      <End Role="PaidLoan" EntitySet="PaidLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoanManagement_ReturnLoan" Association="Self.FK_LoanManagement_ReturnLoan">
+      <End Role="LoanManagement" EntitySet="LoanManagement" />
+      <End Role="ReturnLoan" EntitySet="ReturnLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoanManagement_User" Association="Self.FK_LoanManagement_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="LoanManagement" EntitySet="LoanManagement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Machinery_UserId" Association="Self.FK_Machinery_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Machinery" EntitySet="Machinery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OtherExpense_UserId" Association="Self.FK_OtherExpense_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="OtherExpense" EntitySet="OtherExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OtherItem_OtherItemExpense" Association="Self.FK_OtherItem_OtherItemExpense">
+      <End Role="OtherItem" EntitySet="OtherItem" />
+      <End Role="OtherExpense" EntitySet="OtherExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OtherItem_UserId" Association="Self.FK_OtherItem_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="OtherItem" EntitySet="OtherItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PaidLoan_User" Association="Self.FK_PaidLoan_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="PaidLoan" EntitySet="PaidLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PermanentEmployeeSalary_User" Association="Self.FK_PermanentEmployeeSalary_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="PermanentEmployeeSalary" EntitySet="PermanentEmployeeSalary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersonalAccount_User" Association="Self.FK_PersonalAccount_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="PersonalAccount" EntitySet="PersonalAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Role_User" Association="Self.FK_Role_User">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Seed_SeedExpense" Association="Self.FK_Seed_SeedExpense">
+      <End Role="Seed" EntitySet="Seed" />
+      <End Role="SeedExpense" EntitySet="SeedExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Seed_UserId" Association="Self.FK_Seed_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Seed" EntitySet="Seed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SeedExpense_UserId" Association="Self.FK_SeedExpense_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="SeedExpense" EntitySet="SeedExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransectionAccount_User" Association="Self.FK_TransectionAccount_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="TransectionAccount" EntitySet="TransectionAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransectionAccount_User_PayBy" Association="Self.FK_TransectionAccount_User_PayBy">
+      <End Role="User" EntitySet="User" />
+      <End Role="TransectionAccount" EntitySet="TransectionAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransectionPersonalAccount_User" Association="Self.FK_TransectionPersonalAccount_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="TransectionPersonalAccount" EntitySet="TransectionPersonalAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_BankLoan" Association="Self.FK_User_BankLoan">
+      <End Role="User" EntitySet="User" />
+      <End Role="LoanReceivableFromBank" EntitySet="LoanReceivableFromBank" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_EmployeeLoan" Association="Self.FK_User_EmployeeLoan">
+      <End Role="User" EntitySet="User" />
+      <End Role="LoanReceivableFromEmployee" EntitySet="LoanReceivableFromEmployee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_ReturnLoan" Association="Self.FK_User_ReturnLoan">
+      <End Role="User" EntitySet="User" />
+      <End Role="ReturnLoan" EntitySet="ReturnLoan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_TaskAssignment" Association="Self.FK_User_TaskAssignment">
+      <End Role="User" EntitySet="User" />
+      <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vehicle_UserId" Association="Self.FK_Vehicle_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Animal" Association="Self.FK_Vendor_Animal">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Animal" EntitySet="Animal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Fertilizer" Association="Self.FK_Vendor_Fertilizer">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Fertilizer" EntitySet="Fertilizer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Fuel" Association="Self.FK_Vendor_Fuel">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Fuel" EntitySet="Fuel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Machinery" Association="Self.FK_Vendor_Machinery">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Machinery" EntitySet="Machinery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Seed" Association="Self.FK_Vendor_Seed">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Seed" EntitySet="Seed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendor_Vehicle" Association="Self.FK_Vendor_Vehicle">
+      <End Role="VendorManagement" EntitySet="VendorManagement" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="Position_fk" Association="Self.Position_fk">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Position" EntitySet="Position" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
