@@ -940,6 +940,16 @@ namespace FarmManagement.Controllers
             return Json(vehicleTypes, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult FeedIn()
+        {
+            return View("OtherItem");
+        }
+
+        public ActionResult PesticidesIn()
+        {
+            return View("OtherItem");
+        }
+
         private bool CheckEmployeeHasBalance(decimal amount)
         {
             var account = FarmManagementEntities.TransectionPersonalAccounts.Where(x => x.UserId == LoggedInUser.UserId)

@@ -116,7 +116,9 @@ values
 ('Vehicle Expense','Expense','Expense','VehicleExpense', getdate()),
 ('Machinery Expense','Expense','Expense','MachineryExpense', getdate()),
 ('Pesticides Expense','Expense','Expense','PesticidesExpense', getdate()),
-('General Expense','Expense','Expense','GeneralExpense', getdate())
+('General Expense','Expense','Expense','GeneralExpense', getdate()),
+('Feed Stock in','Stock','Stock','FeedIn', getdate()),
+('Pesticides Stock in','Stock','Stock','PesticidesIn', getdate())
 
 insert into FormSetting
 (FormId, RoleId, IsAdd, IsUpdate, InsertDate)
@@ -125,4 +127,6 @@ values
 ((select top 1 Id from Form where Name = 'Vehicle Expense'), 1, 1, 1, getdate()),
 ((select top 1 Id from Form where Name = 'Machinery Expense'), 1, 1, 1, getdate()),
 ((select top 1 Id from Form where Name = 'Pesticides Expense'), 1, 1, 1, getdate()),
-((select top 1 Id from Form where Name = 'General Expense'), 1, 1, 1, getdate())
+((select top 1 Id from Form where Name = 'General Expense'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'Feed Stock in'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'Pesticides Stock in'), 1, 1, 1, getdate())
