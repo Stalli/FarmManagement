@@ -458,5 +458,30 @@ namespace FarmManagement.Controllers
 
             return Json(new { TotalLeftOtherItem = leftOtherItem }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult AnimalExpense()
+        {
+            return View("OtherItemExpense");
+        }
+
+        public ActionResult VehicleExpense()
+        {
+            return View("OtherItemExpense");
+        }
+
+        public ActionResult MachineryExpense()
+        {
+            return View("OtherItemExpense");
+        }
+        
+        public ActionResult PesticidesExpense()
+        {
+            return View("OtherItemExpense");
+        }
+
+        public ActionResult GeneralExpense()
+        {
+            return View("OtherItemExpense");
+        }
     }
 }

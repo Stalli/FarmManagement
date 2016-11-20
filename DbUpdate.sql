@@ -107,3 +107,22 @@ IF @@ERROR <> 0
     BEGIN
         ROLLBACK;
     END
+
+	
+insert into Form
+(Name, Type, ControllerName, ActionName, InsertDate)
+values
+('Animal Expense','Expense','Expense','AnimalExpense', getdate()),
+('Vehicle Expense','Expense','Expense','VehicleExpense', getdate()),
+('Machinery Expense','Expense','Expense','MachineryExpense', getdate()),
+('Pesticides Expense','Expense','Expense','PesticidesExpense', getdate()),
+('General Expense','Expense','Expense','GeneralExpense', getdate())
+
+insert into FormSetting
+(FormId, RoleId, IsAdd, IsUpdate, InsertDate)
+values
+((select top 1 Id from Form where Name = 'Animal Expense'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'Vehicle Expense'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'Machinery Expense'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'Pesticides Expense'), 1, 1, 1, getdate()),
+((select top 1 Id from Form where Name = 'General Expense'), 1, 1, 1, getdate())
